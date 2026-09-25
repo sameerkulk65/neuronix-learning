@@ -1,0 +1,155 @@
+const phaseId = '6a369d5e66020ed05b3214c3';
+const moduleId = '6a369d6066020ed05b321502'; // Module 270: LLM Routing Layer
+
+const H1 = (en, kn) => ({ type: 'heading', data: { textEn: en, textKn: kn || en, level: 'H1' } });
+const H2 = (en, kn) => ({ type: 'heading', data: { textEn: en, textKn: kn || en, level: 'H2' } });
+const C = (he, hk, be, bk) => ({ type: 'concept', data: { headingEn: he, headingKn: hk, bodyEn: be, bodyKn: bk } });
+const CODE = (file, he, hk, de, dk, code) => ({ type: 'code', data: { filename: file, headingEn: he, headingKn: hk, descEn: de, descKn: dk, code } });
+const OUT = (o) => ({ type: 'output', data: { output: o } });
+const TBL = (he, headers, rows) => ({ type: 'table', data: { headingEn: he, headers, rows } });
+
+module.exports = {
+  phaseId,
+  moduleId,
+  order: 2,
+  type: 'interactive',
+  duration: 50,
+  difficulty: 'advanced',
+  status: 'published',
+  title: 'LLM Routing Layer — LiteLLM, OpenRouter, Portkey (Part 3 of 3) — Production Routing Strategies, Caching, and Rate Limits',
+  titleKn: 'LLM Routing Layer — LiteLLM, OpenRouter, Portkey (Part 3 of 3) — Production Routing Strategies, Caching, ಮತ್ತು Rate Limits',
+  desc: 'Go beyond static priority: load balancing, cost-, latency- and task-aware routing, a constraints-then-optimize pipeline, a scoped semantic cache, per-key rate limits, and how MCP model preferences map onto aliases -- every result from a real run.',
+  descKn: 'static priority ಮೀರಿ: load balancing, cost-, latency-, task-aware routing, constraints-ನಂತರ-optimize pipeline, scoped semantic cache, ಪ್ರತಿ key rate limits, ಮತ್ತು MCP model preferences aliases ಗೆ ಹೇಗೆ ನಕ್ಷೆಯಾಗುತ್ತವೆ -- ಎಲ್ಲಾ ಫಲಿತಾಂಶಗಳು ನಿಜ run ಗಳಿಂದ.',
+  objectives: [
+    'Compare round-robin and weighted load balancing and read their real distributions.',
+    'Explain why the cheapest model is wrong unless it clears a quality bar, and why latency routing should use a rolling window rather than one sample.',
+    'Genuinely run a constraints-then-optimize pipeline and handle the "no model qualifies" case.',
+    'Demonstrate why a semantic cache must be scoped, using a real cross-user leak.',
+    'Apply per-key rate limits, distinguish routing from fallback and retry, and choose between LiteLLM, OpenRouter and Portkey by constraint.',
+  ],
+  objectivesKn: [
+    'round-robin ಮತ್ತು weighted load balancing ಹೋಲಿಸಿ, ನಿಜ ವಿತರಣೆ ಓದಿ.',
+    'quality ಮಿತಿ ದಾಟದ ಹೊರತು ಅಗ್ಗದ model ತಪ್ಪು ಏಕೆ, ಮತ್ತು latency routing ಗೆ rolling window ಏಕೆ ಎಂದು ವಿವರಿಸಿ.',
+    'constraints-ನಂತರ-optimize pipeline ಅನ್ನು ಚಲಾಯಿಸಿ, "ಯಾವ model ಗೂ ಅರ್ಹತೆ ಇಲ್ಲ" ಪ್ರಕರಣ ನಿರ್ವಹಿಸಿ.',
+    'semantic cache scoped ಆಗಿರಬೇಕು ಏಕೆ ಎಂದು ನಿಜ cross-user leak ಮೂಲಕ ಪ್ರದರ್ಶಿಸಿ.',
+    'ಪ್ರತಿ key rate limits ಅನ್ವಯಿಸಿ, routing, fallback, retry ವ್ಯತ್ಯಾಸ ತಿಳಿಸಿ, ನಿರ್ಬಂಧದ ಆಧಾರದಲ್ಲಿ LiteLLM/OpenRouter/Portkey ಆರಿಸಿ.',
+  ],
+  blocks: [
+    H1('LLM Routing Layer — LiteLLM, OpenRouter, Portkey (Part 3 of 3)'),
+    C('Lesson Info', 'Lesson ಮಾಹಿತಿ',
+      '• Type: Build · Language: Python (stdlib only) · Prerequisites: Parts 1 and 2 · Time: ~50 minutes · Part 3 of 3. All outputs below were produced by genuinely running this code; the "similarity" function is a toy, and is labelled as such where it appears.',
+      '• Type: Build · Language: Python (stdlib only) · Prerequisites: Parts 1, 2 · Time: ~50 ನಿಮಿಷಗಳು · Part 3 of 3. ಎಲ್ಲಾ outputs ಈ ಕೋಡ್ ಅನ್ನು ನಿಜವಾಗಿ ಚಲಾಯಿಸಿ ಪಡೆದವು.'),
+
+    H2('Beyond Static Priority', 'Static Priority ಮೀರಿ'),
+    TBL('Five routing strategies', ['Strategy', 'Question it answers', 'Risk if used alone'], [
+      ['Static priority (Parts 1-2)', 'Which provider first?', 'Ignores load, cost and latency'],
+      ['Load balancing', 'How do I spread traffic?', 'Ignores quality'],
+      ['Cost-aware', 'What is cheapest?', 'Cheapest may be too weak'],
+      ['Latency-aware', 'What is fastest now?', 'One spike can mislead'],
+      ['Task-aware', 'What kind of job is this?', 'Misclassification'],
+    ]),
+
+    H2('Load Balancing', 'Load Balancing'),
+    CODE('router.py', 'Round-robin and weighted distribution', 'Round-robin ಮತ್ತು weighted ವಿತರಣೆ',
+      'Round-robin alternates evenly. Weighted routing sends a chosen share to each provider, for example when one has more quota. With a fixed seed, 1000 requests split close to, but not exactly, 70/20/10, because the choice is random per request.',
+      'Round-robin ಸಮನಾಗಿ ಬದಲಾಯಿಸುತ್ತದೆ. Weighted ಪ್ರತಿ provider ಗೆ ಆಯ್ದ ಪಾಲು ಕಳುಹಿಸುತ್ತದೆ. ಸ್ಥಿರ seed ನೊಂದಿಗೆ 1000 requests ಸುಮಾರು 70/20/10.',
+      'import itertools, random\ncycle = itertools.cycle(["provider_a/model", "provider_b/model"])\nprint("round-robin:", [next(cycle) for _ in range(6)])\n\nrandom.seed(42)\nweights = {"provider_a/model": 70, "provider_b/model": 20, "provider_c/model": 10}\nfrom collections import Counter\npicks = Counter(random.choices(list(weights), weights=list(weights.values()), k=1000))\nprint("weighted 70/20/10 over 1000 requests (seed 42):", dict(picks))'),
+    OUT("round-robin: ['provider_a/model', 'provider_b/model', 'provider_a/model', 'provider_b/model', 'provider_a/model', 'provider_b/model']\nweighted 70/20/10 over 1000 requests (seed 42): {'provider_a/model': 692, 'provider_b/model': 200, 'provider_c/model': 108}"),
+
+    H2('Cost-Aware and Latency-Aware Routing', 'Cost-Aware ಮತ್ತು Latency-Aware Routing'),
+    C('Cheapest Acceptable, Not Cheapest', 'ಅಗ್ಗ ಅಲ್ಲ, ಅಗ್ಗದ ಸ್ವೀಕಾರಾರ್ಹ',
+      'Minimising cost alone picks the weakest model. The correct rule is: keep only models meeting a quality requirement, then pick the cheapest of those. If nobody meets the bar, that is an explicit outcome, not a silent downgrade.',
+      'ವೆಚ್ಚ ಮಾತ್ರ ಕಡಿಮೆ ಮಾಡಿದರೆ ದುರ್ಬಲ model ಆಯ್ಕೆಯಾಗುತ್ತದೆ. ಸರಿಯಾದ ನಿಯಮ: quality ಅಗತ್ಯ ಪೂರೈಸುವ models ಮಾತ್ರ ಉಳಿಸಿ, ಅವುಗಳಲ್ಲಿ ಅಗ್ಗದ್ದು.'),
+    CODE('router.py', 'Quality-gated cost selection', 'Quality-ಗೇಟ್ ಮಾಡಿದ cost ಆಯ್ಕೆ',
+      'The naive minimum picks "small" even for a request needing quality 75. Filtering first selects "medium". With a bar of 99 nothing qualifies and the router must say so.',
+      'ಸರಳ ಕನಿಷ್ಠ "small" ಆಯ್ಕೆ ಮಾಡುತ್ತದೆ. ಮೊದಲು ಫಿಲ್ಟರ್ ಮಾಡಿದರೆ "medium". 99 ಆದರೆ ಯಾವುದೂ ಅರ್ಹವಲ್ಲ.',
+      'models = {"small": {"cost": 1, "quality": 60}, "medium": {"cost": 3, "quality": 80}, "large": {"cost": 10, "quality": 95}}\nnaive = min(models, key=lambda m: models[m]["cost"])\ndef pick(min_quality):\n    ok = [m for m in models if models[m]["quality"] >= min_quality]\n    return ok, (min(ok, key=lambda m: models[m]["cost"]) if ok else None)\nok, sel = pick(75)\nprint("naive cheapest:", naive, "| eligible at quality>=75:", ok, "| selected:", sel)\nprint("no model meets quality>=99:", pick(99)[0])'),
+    OUT("naive cheapest: small | eligible at quality>=75: ['medium', 'large'] | selected: medium\nno model meets quality>=99: []"),
+    CODE('router.py', 'Latency routing changes over time, and spikes', 'Latency routing ಕಾಲದೊಂದಿಗೆ ಬದಲಾಗುತ್ತದೆ, spikes',
+      'The fastest provider is a moving target: at 10:00 it is provider_a, at 10:15 provider_b. Also, one 5000 ms spike drags the mean from about 310 ms up to 778.9 ms while the median stays at 310, which is why a rolling window with a robust statistic is preferred.',
+      'ವೇಗದ provider ಚಲಿಸುವ ಗುರಿ. ಒಂದು 5000 ms spike ಕೊನೆಯ sample ಮತ್ತು mean ಅನ್ನು ದಾರಿತಪ್ಪಿಸುತ್ತದೆ, median ಸಾಮಾನ್ಯದ ಹತ್ತಿರ ಉಳಿಯುತ್ತದೆ.',
+      'import statistics\ndef fastest(lat): return min(lat, key=lat.get)\nprint("10:00 ->", fastest({"provider_a/model": 350, "provider_b/model": 600}))\nprint("10:15 ->", fastest({"provider_a/model": 1800, "provider_b/model": 550}))\nsamples = [300, 310, 305, 320, 5000, 315, 308, 312, 310, 309]\nprint("one 5000 ms spike: spike =", samples[4], "| mean =", statistics.mean(samples), "| median =", statistics.median(samples))'),
+    OUT("10:00 -> provider_a/model\n10:15 -> provider_b/model\none 5000 ms spike: spike = 5000 | mean = 778.9 | median = 310.0"),
+
+    H2('Task-Aware Routing', 'Task-Aware Routing'),
+    CODE('router.py', 'Classify the task, then choose the alias', 'ಕಾರ್ಯ ವರ್ಗೀಕರಿಸಿ, ನಂತರ alias ಆರಿಸಿ',
+      'A tiny classifier maps a request to a task type, and the task type maps to an alias. In production the classifier may itself be a small model; the routing idea is identical.',
+      'ಸಣ್ಣ classifier request ಅನ್ನು ಕಾರ್ಯ ಪ್ರಕಾರಕ್ಕೆ, ಕಾರ್ಯ ಪ್ರಕಾರ alias ಗೆ ನಕ್ಷೆ ಮಾಡುತ್ತದೆ.',
+      'def classify(text):\n    t = text.lower()\n    if "python" in t or "exception" in t or "code" in t: return "coding"\n    if "summarize" in t: return "summarization"\n    if "classify" in t: return "classification"\n    return "reasoning"\nTASK_TO_ALIAS = {"coding": "coding_model", "summarization": "fast_model", "classification": "fast_model", "reasoning": "our_smart_model"}\nfor q in ["Fix this Python exception", "Summarize this report", "Classify this ticket as billing/support/sales", "Why did revenue fall?"]:\n    task = classify(q)\n    print(repr(q), "->", task, "->", TASK_TO_ALIAS[task])'),
+    OUT("'Fix this Python exception' -> coding -> coding_model\n'Summarize this report' -> summarization -> fast_model\n'Classify this ticket as billing/support/sales' -> classification -> fast_model\n'Why did revenue fall?' -> reasoning -> our_smart_model"),
+
+    H2('The Combined Pipeline: Constraints, Then Optimize, Then Fall Back', 'ಸಂಯೋಜಿತ Pipeline'),
+    C('Hard Filters Before Soft Preferences', 'Soft ಆದ್ಯತೆಗಳ ಮೊದಲು Hard Filters',
+      'Real routing composes the strategies: first apply hard constraints (latency limit, minimum quality, allowed regions), then optimize among the survivors (cheapest), and keep the rest as the fallback order. If the constraints leave nobody, return an explicit empty result.',
+      'ನಿಜ routing ತಂತ್ರಗಳನ್ನು ಸಂಯೋಜಿಸುತ್ತದೆ: ಮೊದಲು hard constraints, ನಂತರ ಉಳಿದವರಲ್ಲಿ optimize, ಉಳಿದವುಗಳು fallback ಕ್ರಮ.'),
+    CODE('router.py', 'Live chat, batch, and an impossible request', 'Live chat, batch, ಮತ್ತು ಅಸಾಧ್ಯ request',
+      'The same three providers give different ordered chains for different workloads. The chain for a request is the constraint-filtered list, cheapest first.',
+      'ಅದೇ ಮೂರು providers ಬೇರೆ ಕಾರ್ಯಭಾರಗಳಿಗೆ ಬೇರೆ ಕ್ರಮಬದ್ಧ ಸರಪಳಿ ಕೊಡುತ್ತವೆ.',
+      'P = {"A": {"latency": 1800, "quality": 70, "cost": 1, "region": "us"},\n     "B": {"latency": 600, "quality": 85, "cost": 4, "region": "eu"},\n     "C": {"latency": 400, "quality": 82, "cost": 3, "region": "us"}}\ndef chain(max_latency, min_quality, regions):\n    ok = [k for k, v in P.items() if v["latency"] <= max_latency and v["quality"] >= min_quality and v["region"] in regions]\n    return sorted(ok, key=lambda k: P[k]["cost"])\nprint("live chat (latency<=700, quality>=80, us+eu):", chain(700, 80, {"us", "eu"}))\nprint("batch (latency<=2000, quality>=60, us only):", chain(2000, 60, {"us"}))\nprint("impossible (quality>=99):", chain(2000, 99, {"us", "eu"}))'),
+    OUT("live chat (latency<=700, quality>=80, us+eu): ['C', 'B']\nbatch (latency<=2000, quality>=60, us only): ['A', 'C']\nimpossible (quality>=99): []"),
+
+    H2('Semantic Caching and Why It Must Be Scoped', 'Semantic Caching, ಮತ್ತು Scope ಏಕೆ ಬೇಕು'),
+    C('Exact Caches Miss Paraphrases', 'Exact Cache Paraphrase ತಪ್ಪಿಸುತ್ತದೆ',
+      'An exact-match cache only hits on identical text. A semantic cache stores embeddings and returns a cached answer for a similar question, saving a model call. The danger: "similar" is not "the same person\'s data". Without a scope key (user or tenant), one user can be served another user\'s answer.',
+      'exact cache ಒಂದೇ ಪಠ್ಯಕ್ಕೆ ಮಾತ್ರ. semantic cache ಸಮಾನ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರ ಕೊಡುತ್ತದೆ. ಅಪಾಯ: "ಸಮಾನ" ≠ "ಅದೇ ವ್ಯಕ್ತಿಯ ಡೇಟಾ". scope key ಇಲ್ಲದಿದ್ದರೆ ಒಬ್ಬರ ಉತ್ತರ ಇನ್ನೊಬ್ಬರಿಗೆ ಹೋಗಬಹುದು.'),
+    CODE('router.py', 'A toy semantic cache: unscoped leaks, scoped does not', 'ಆಟಿಕೆ semantic cache: unscoped ಸೋರುತ್ತದೆ, scoped ಸೋರುವುದಿಲ್ಲ',
+      'The similarity function is a toy word-overlap measure, not real embeddings. Alice caches her balance. With an unscoped cache Bob\'s similar question returns Alice\'s data; with a per-user scope Bob misses and Alice still hits.',
+      'similarity ಆಟಿಕೆ word-overlap ಅಳತೆ, ನಿಜ embeddings ಅಲ್ಲ. Alice ತನ್ನ ಬಾಕಿ cache ಮಾಡುತ್ತಾಳೆ. Unscoped cache ನಲ್ಲಿ Bob ಗೆ Alice ನ ಡೇಟಾ ಸಿಗುತ್ತದೆ.',
+      'import re, math, collections\ndef vec(t): return collections.Counter(re.findall(r"[a-z\']+", t.lower()))\ndef cosine(a, b):\n    dot = sum(a[k]*b[k] for k in a)\n    na = math.sqrt(sum(v*v for v in a.values())); nb = math.sqrt(sum(v*v for v in b.values()))\n    return dot/(na*nb) if na and nb else 0.0\nclass SemanticCache:\n    def __init__(self, threshold, scoped): self.items=[]; self.threshold=threshold; self.scoped=scoped\n    def put(self, scope, prompt, answer): self.items.append((scope, vec(prompt), answer))\n    def get(self, scope, prompt):\n        v = vec(prompt); best = None\n        for s, iv, ans in self.items:\n            if self.scoped and s != scope: continue\n            sc = cosine(v, iv)\n            if sc >= self.threshold and (best is None or sc > best[0]): best = (round(sc, 3), ans)\n        return best\na = "What is my account balance?"; b = "What is John\'s account balance?"\nprint("similarity between the two questions =", round(cosine(vec(a), vec(b)), 3))\nfor scoped in (False, True):\n    c = SemanticCache(0.7, scoped); c.put("alice", a, "Alice\'s balance is $500")\n    print("SCOPED" if scoped else "UNSCOPED", "cache, bob asks a similar question ->", c.get("bob", b))\nprint("SCOPED cache, alice asks again ->", c.get("alice", a))'),
+    OUT("similarity between the two questions = 0.8\nUNSCOPED cache, bob asks a similar question -> (0.8, \"Alice's balance is $500\")\nSCOPED cache, bob asks a similar question -> None\nSCOPED cache, alice asks again -> (1.0, \"Alice's balance is $500\")"),
+    C('Similarity Is Not Identity', 'Similarity ≠ Identity',
+      'Even at 0.8 similarity, "my account balance" and "John\'s account balance" are different questions with different owners. Semantic caching suits public, non-personalised answers; for anything user-specific, scope the cache key or do not cache.',
+      '0.8 similarity ನಲ್ಲಿಯೂ "ನನ್ನ ಬಾಕಿ" ಮತ್ತು "John ನ ಬಾಕಿ" ಬೇರೆ ಪ್ರಶ್ನೆಗಳು. ವೈಯಕ್ತಿಕ ಡೇಟಾಗೆ cache key ಅನ್ನು scope ಮಾಡಿ ಅಥವಾ cache ಮಾಡಬೇಡಿ.'),
+
+    H2('Per-Key Rate Limits', 'ಪ್ರತಿ Key ಗೆ Rate Limits'),
+    CODE('router.py', 'One noisy key must not starve the others', 'ಒಂದು ಗದ್ದಲದ key ಇತರರನ್ನು ಹಸಿವಿನಲ್ಲಿ ಇಡಬಾರದು',
+      'The research key has a limit of two requests; its third and fourth get 429. The support key is unaffected, and an unknown key gets 401. Auth (who are you) comes before limits (how much).',
+      'research key ಗೆ ಮಿತಿ ಎರಡು; ಮೂರನೇ ಮತ್ತು ನಾಲ್ಕನೇ 429. support key ಪ್ರಭಾವಿತವಾಗಿಲ್ಲ; ಅಪರಿಚಿತ key ಗೆ 401.',
+      'limits = {"research-key": 2, "support-key": 5}\nused = {}\ndef handle(key):\n    if key not in limits: return (401, "unknown key")\n    used[key] = used.get(key, 0) + 1\n    return (200, "ok") if used[key] <= limits[key] else (429, "rate limited")\nprint("research-key x4:", [handle("research-key")[0] for _ in range(4)])\nprint("support-key still served:", handle("support-key"))\nprint("unknown key:", handle("nope"))'),
+    OUT("research-key x4: [200, 200, 429, 429]\nsupport-key still served: (200, 'ok')\nunknown key: (401, 'unknown key')"),
+
+    H2('Routing vs Fallback vs Retry', 'Routing vs Fallback vs Retry'),
+    TBL('Three tools, three questions', ['Mechanism', 'Question', 'Example'], [
+      ['Routing', 'Which model should do this job?', 'coding task -> coding_model'],
+      ['Fallback', 'What if this provider fails?', '503 at A -> serve from B'],
+      ['Retry', 'What if this call failed transiently?', 'try the same provider again'],
+    ]),
+    C('Compose Them, Bound Them', 'ಸಂಯೋಜಿಸಿ, ಮಿತಗೊಳಿಸಿ',
+      'Routing picks the chain, fallback walks it, retry repeats one link. Used together without a shared attempt budget they multiply (Part 2 showed 15 attempts for one request). Give them one budget.',
+      'Routing ಸರಪಳಿ ಆರಿಸುತ್ತದೆ, fallback ಅದರಲ್ಲಿ ನಡೆಯುತ್ತದೆ, retry ಒಂದು ಕೊಂಡಿಯನ್ನು ಪುನರಾವರ್ತಿಸುತ್ತದೆ. ಹಂಚಿಕೆಯ budget ಇಲ್ಲದೆ ಅವು ಗುಣಿಸುತ್ತವೆ.'),
+
+    H2('MCP Model Preferences', 'MCP Model Preferences'),
+    CODE('router.py', 'Mapping a preference onto an alias', 'preference ಅನ್ನು alias ಗೆ ನಕ್ಷೆ ಮಾಡುವುದು',
+      'A client can express priorities (speed, intelligence, cost) rather than a model name. The gateway owns the mapping to your aliases, which keeps model names out of the client.',
+      'client ಮಾದರಿ ಹೆಸರಿನ ಬದಲು ಆದ್ಯತೆಗಳನ್ನು (ವೇಗ, ಬುದ್ಧಿ, ವೆಚ್ಚ) ವ್ಯಕ್ತಪಡಿಸಬಹುದು. gateway ಅದನ್ನು aliases ಗೆ ನಕ್ಷೆ ಮಾಡುತ್ತದೆ.',
+      'def alias_for(pref):\n    if pref.get("speedPriority", 0) > 0.7: return "fast_model"\n    if pref.get("costPriority", 0) > 0.7: return "fast_model"\n    if pref.get("hints") == ["code"]: return "coding_model"\n    return "our_smart_model"\nprint(alias_for({"speedPriority": 0.9}))\nprint(alias_for({"intelligencePriority": 0.9}))\nprint(alias_for({"hints": ["code"]}))'),
+    OUT("fast_model\nour_smart_model\ncoding_model"),
+
+    H2('LiteLLM vs OpenRouter vs Portkey', 'LiteLLM vs OpenRouter vs Portkey'),
+    TBL('Choose by constraint', ['Constraint', 'Points toward'], [
+      ['You must control infrastructure, credentials and the data path', 'LiteLLM (self-hosted)'],
+      ['You want the least operational work', 'OpenRouter (managed aggregator)'],
+      ['You need observability, guardrails, budgets and governance', 'Portkey (production gateway)'],
+    ]),
+    C('Key Takeaways', 'ಮುಖ್ಯ ಅಂಶಗಳು',
+      '• Static priority is the base; balancing, cost, latency and task routing refine it. Weighted 70/20/10 over 1000 requests gave 692/200/108.\n• The cheapest model is wrong unless it clears the quality bar; if none qualifies, say so.\n• One latency spike moved the mean to 778.9 ms while the median stayed 310 ms, so use a rolling robust statistic.\n• Compose constraints, then optimise, then fallback order; an impossible request returns [].\n• An unscoped semantic cache genuinely leaked Alice\'s balance to Bob; scoping fixed it. The similarity function was a toy.\n• Per-key limits isolated the research key (429s) from the support key (200).\n• Routing, fallback and retry answer different questions; give them one shared attempt budget.',
+      '• Static priority ಆಧಾರ; ಉಳಿದವು ಅದನ್ನು ಪರಿಷ್ಕರಿಸುತ್ತವೆ.\n• quality ಮಿತಿ ದಾಟದ ಹೊರತು ಅಗ್ಗದ model ತಪ್ಪು.\n• ಒಂದು spike mean ಅನ್ನು ಬದಲಿಸಿತು, median ಅಲ್ಲ.\n• Constraints, optimize, fallback.\n• Unscoped semantic cache ಸೋರಿಕೆ ಮಾಡಿತು; scope ಸರಿಪಡಿಸಿತು.\n• ಪ್ರತಿ key ಮಿತಿ ಪ್ರತ್ಯೇಕಿಸಿತು.\n• ಒಂದೇ attempt budget.'),
+
+    { type: 'quiz', data: { questions: [
+      { q: 'Why is "pick the cheapest model" incomplete?', qKn: '"ಅಗ್ಗದ model ಆರಿಸಿ" ಅಪೂರ್ಣ ಏಕೆ?',
+        opts: ['Cheap models are always best', 'The cheapest may fail the quality requirement; filter by quality first, then choose the cheapest survivor', 'Cost does not matter', 'It is illegal'],
+        optsKn: ['ಅಗ್ಗದ models ಯಾವಾಗಲೂ ಉತ್ತಮ', 'ಅಗ್ಗದ್ದು quality ಪೂರೈಸದಿರಬಹುದು; ಮೊದಲು quality ಫಿಲ್ಟರ್, ನಂತರ ಅಗ್ಗದ್ದು', 'ವೆಚ್ಚ ಮುಖ್ಯವಲ್ಲ', 'ಅದು ಕಾನೂನುಬಾಹಿರ'], correct: 1 },
+      { q: 'In the run, one 5000 ms sample made the mean 778.9 ms. What was the median?', qKn: 'run ನಲ್ಲಿ ಒಂದು 5000 ms sample mean ಅನ್ನು 778.9 ms ಮಾಡಿತು. median ಎಷ್ಟು?',
+        opts: ['778.9', '5000', '310', '0'], optsKn: ['778.9', '5000', '310', '0'], correct: 2 },
+      { q: 'What did the unscoped semantic cache do when Bob asked a similar question?', qKn: 'Bob ಸಮಾನ ಪ್ರಶ್ನೆ ಕೇಳಿದಾಗ unscoped semantic cache ಏನು ಮಾಡಿತು?',
+        opts: ['Returned nothing', 'Returned Alice\'s cached balance', 'Raised a 401', 'Asked the provider'],
+        optsKn: ['ಏನೂ ಹಿಂತಿರುಗಿಸಲಿಲ್ಲ', 'Alice ನ cache ಮಾಡಿದ ಬಾಕಿ ಹಿಂತಿರುಗಿಸಿತು', '401 ಎತ್ತಿತು', 'provider ಅನ್ನು ಕೇಳಿತು'], correct: 1 },
+      { q: 'A constraints pipeline finds no provider meeting quality >= 99. What should the router return?', qKn: 'quality >= 99 ಪೂರೈಸುವ provider ಸಿಗದಿದ್ದರೆ router ಏನು ಹಿಂತಿರುಗಿಸಬೇಕು?',
+        opts: ['A random provider', 'An explicit empty result the caller can handle', 'The cheapest anyway', 'Crash silently'],
+        optsKn: ['ಯಾದೃಚ್ಛಿಕ provider', 'ಕರೆದವರು ನಿರ್ವಹಿಸಬಹುದಾದ ಸ್ಪಷ್ಟ ಖಾಲಿ ಫಲಿತಾಂಶ', 'ಹೇಗಾದರೂ ಅಗ್ಗದ್ದು', 'ಮೌನವಾಗಿ ಕ್ರ್ಯಾಶ್'], correct: 1 },
+      { q: 'You need to keep credentials and the data path in your own infrastructure. Which fits best?', qKn: 'credentials ಮತ್ತು ಡೇಟಾ ಮಾರ್ಗ ನಿಮ್ಮ ಮೂಲಸೌಕರ್ಯದಲ್ಲೇ ಇರಬೇಕು. ಯಾವುದು ಸರಿ?',
+        opts: ['LiteLLM self-hosted', 'A managed aggregator only', 'No gateway', 'Any; it does not matter'],
+        optsKn: ['LiteLLM self-hosted', 'managed aggregator ಮಾತ್ರ', 'gateway ಇಲ್ಲ', 'ಯಾವುದೂ; ವ್ಯತ್ಯಾಸವಿಲ್ಲ'], correct: 0 },
+    ] } },
+  ],
+};
