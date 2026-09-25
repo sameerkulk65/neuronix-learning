@@ -1,0 +1,56 @@
+const phaseId = '6a369d5e66020ed05b3214c3'; // Phase 16: Tools and Protocols
+const moduleId = '6ab6d18eb7119db96ad77967'; // Module 271.3: Skill Permissions, Sandboxes, and Trust
+const L = ['6ab6d4fcb70ff7002522fd37', '6ab6d4fe0ee8a894e91ab78d', '6ab6d4ff60e13e1dfb39b67f'];
+const P = (part, order, difficulty, title, titleKn, problem, problemKn) => ({
+  phaseId, moduleId, lessonId: L[part - 1], order, difficulty, title, titleKn, problem, problemKn,
+});
+
+module.exports = [
+  P(1, 1, 'beginner',
+    'Name the Layer',
+    'ಪದರವನ್ನು ಹೆಸರಿಸಿ',
+    'For each control, name which of the five layers it belongs to (capability exposure, permission policy, approval gate, sandbox, verification) and say what it does NOT protect:\n(a) the agent is only given a read_file tool  (b) a prompt "Publish v2.4.0 to staging?"  (c) --network none  (d) a diff check that only README.md changed  (e) write allowed only under /workspace/project.',
+    'ಪ್ರತಿ ನಿಯಂತ್ರಣ ಐದು ಪದರಗಳಲ್ಲಿ (capability exposure, permission policy, approval gate, sandbox, verification) ಯಾವುದಕ್ಕೆ ಸೇರುತ್ತದೆ ಮತ್ತು ಅದು ಏನನ್ನು ರಕ್ಷಿಸುವುದಿಲ್ಲ ಎಂದು ಹೇಳಿ:\n(a) ಏಜೆಂಟ್‌ಗೆ read_file tool ಮಾತ್ರ ನೀಡಲಾಗಿದೆ  (b) "v2.4.0 ಅನ್ನು staging ಗೆ publish ಮಾಡಬೇಕೇ?" ಪ್ರಾಂಪ್ಟ್  (c) --network none  (d) README.md ಮಾತ್ರ ಬದಲಾಗಿದೆ ಎಂಬ diff ಪರಿಶೀಲನೆ  (e) /workspace/project ಅಡಿಯಲ್ಲಿ ಮಾತ್ರ ಬರೆಯಲು ಅನುಮತಿ.'),
+  P(1, 2, 'intermediate',
+    'Threat Model a Package',
+    'Package ನ Threat Model ಮಾಡಿ',
+    'Take this package: SKILL.md, references/setup.md, scripts/helper.py, requirements.txt.\n1. For each of the four threat sources (malicious package, compromised dependency, untrusted task content, ordinary bug) give one concrete way it could hurt a user of this package.\n2. Draw the trust chain for it and mark who controls each edge and which boundary validates it.\n3. List five install-time checks you would run before the model ever sees the package and say what each catches.',
+    'ಈ package ತೆಗೆದುಕೊಳ್ಳಿ: SKILL.md, references/setup.md, scripts/helper.py, requirements.txt.\n1. ನಾಲ್ಕು ಬೆದರಿಕೆ ಮೂಲಗಳಿಗೆ (ದುರುದ್ದೇಶದ package, ರಾಜಿಯಾದ dependency, ಅಪನಂಬಿಕೆ ಕಾರ್ಯ ವಿಷಯ, ಸಾಮಾನ್ಯ ದೋಷ) ಪ್ರತಿಯೊಂದು ಈ package ಬಳಕೆದಾರರಿಗೆ ಹಾನಿ ಮಾಡುವ ಒಂದು ನಿರ್ದಿಷ್ಟ ವಿಧಾನ ನೀಡಿ.\n2. ಇದಕ್ಕೆ ವಿಶ್ವಾಸ ಸರಪಳಿ ಬರೆದು ಪ್ರತಿ ಸಂಪರ್ಕವನ್ನು ಯಾರು ನಿಯಂತ್ರಿಸುತ್ತಾರೆ ಮತ್ತು ಯಾವ ಗಡಿ ಮಾನ್ಯಗೊಳಿಸುತ್ತದೆ ಎಂದು ಗುರುತಿಸಿ.\n3. ಮಾದರಿ package ನೋಡುವ ಮೊದಲು ಚಲಾಯಿಸುವ ಐದು ಇನ್‌ಸ್ಟಾಲ್-ಸಮಯದ ಪರಿಶೀಲನೆಗಳು ಮತ್ತು ಪ್ರತಿಯೊಂದು ಏನನ್ನು ಹಿಡಿಯುತ್ತದೆ ಎಂದು ತಿಳಿಸಿ.'),
+  P(1, 3, 'advanced',
+    'Write an ActionRequest for a Real Task',
+    'ನಿಜ ಕಾರ್ಯಕ್ಕೆ ActionRequest ಬರೆಯಿರಿ',
+    'A release skill wants to (1) read CHANGELOG.md, (2) run scripts/inspect_release.py, (3) upload a report to https://registry.example.test:8443/api, (4) write reports/release.json.\n1. Express each as an ActionRequest with every field filled in and an honest side_effect.\n2. Run them through the lab reviewer and record ALLOW, ASK or DENY with reasons; adjust the policy (not the request) until you can justify each verdict.\n3. Explain why a declared side_effect of "read_only" must never be trusted by the reviewer on its own.',
+    'release skill ಗೆ (1) CHANGELOG.md ಓದಬೇಕು, (2) scripts/inspect_release.py ಚಲಾಯಿಸಬೇಕು, (3) https://registry.example.test:8443/api ಗೆ ವರದಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕು, (4) reports/release.json ಬರೆಯಬೇಕು.\n1. ಪ್ರತಿಯೊಂದನ್ನು ಎಲ್ಲಾ ಕ್ಷೇತ್ರ ತುಂಬಿದ ಮತ್ತು ಪ್ರಾಮಾಣಿಕ side_effect ಇರುವ ActionRequest ಆಗಿ ವ್ಯಕ್ತಪಡಿಸಿ.\n2. lab reviewer ಮೂಲಕ ಚಲಾಯಿಸಿ ALLOW, ASK, DENY ಕಾರಣಗಳೊಂದಿಗೆ ದಾಖಲಿಸಿ; ಪ್ರತಿ ತೀರ್ಪನ್ನು ಸಮರ್ಥಿಸುವವರೆಗೆ ಕೋರಿಕೆಯನ್ನಲ್ಲ policy ಅನ್ನು ಹೊಂದಿಸಿ.\n3. ಘೋಷಿತ side_effect "read_only" ಅನ್ನು reviewer ಸ್ವತಃ ಎಂದಿಗೂ ನಂಬಬಾರದು ಏಕೆ?'),
+
+  P(2, 1, 'beginner',
+    'Classify Ten argv Vectors',
+    'ಹತ್ತು argv ಗಳನ್ನು ವರ್ಗೀಕರಿಸಿ',
+    'Run inspect_command on ten argv lists of your own: the reviewed script, the same script with an extra flag, python3 -c, python3 other.py, rm -rf, curl, an absolute path to python, a Windows-style path with .exe, an empty list, and one more you invent.\n1. Show each verdict and reason.\n2. Which of them would shell=False alone have allowed to run?\n3. Give one argument that would be dangerous even with the reviewed executable and script.',
+    'ನಿಮ್ಮದೇ ಹತ್ತು argv ಪಟ್ಟಿಗಳ ಮೇಲೆ inspect_command ಚಲಾಯಿಸಿ: ಪರಿಶೀಲಿತ script, ಹೆಚ್ಚುವರಿ flag ಇರುವ ಅದೇ script, python3 -c, python3 other.py, rm -rf, curl, python ಗೆ absolute path, .exe ಇರುವ Windows path, ಖಾಲಿ ಪಟ್ಟಿ, ಮತ್ತು ನೀವು ಕಲ್ಪಿಸಿದ ಇನ್ನೊಂದು.\n1. ಪ್ರತಿ ತೀರ್ಪು ಮತ್ತು ಕಾರಣ ತೋರಿಸಿ.\n2. shell=False ಮಾತ್ರ ಇವುಗಳಲ್ಲಿ ಯಾವುದನ್ನು ಚಲಾಯಿಸಲು ಬಿಡುತ್ತಿತ್ತು?\n3. ಪರಿಶೀಲಿತ executable ಮತ್ತು script ಇದ್ದರೂ ಅಪಾಯಕಾರಿಯಾಗುವ ಒಂದು argument ನೀಡಿ.'),
+  P(2, 2, 'intermediate',
+    'Break and Fix the Origin Normalizer',
+    'Origin Normalizer ಅನ್ನು ಮುರಿಯಿರಿ ಮತ್ತು ಸರಿಪಡಿಸಿ',
+    'Test normalize_https_origin with at least ten URLs: trailing dots, uppercase hosts, explicit :443, :0, very large ports, IPv6 with zone ids, userinfo, a bare hostname with no dot, an internationalized name, and a URL with a fragment.\n1. Record what the lab does with each and note any result you think is wrong.\n2. Fix at least one weakness (for example reject port 0 or trailing dots by policy) and re-run.\n3. Explain why redirect destinations must go through the same normalization before being followed.',
+    'ಕನಿಷ್ಠ ಹತ್ತು URL ಗಳೊಂದಿಗೆ normalize_https_origin ಪರೀಕ್ಷಿಸಿ: ಕೊನೆಯ ಚುಕ್ಕೆಗಳು, ದೊಡ್ಡಕ್ಷರ hosts, ಸ್ಪಷ್ಟ :443, :0, ಬಹಳ ದೊಡ್ಡ ports, zone id ಇರುವ IPv6, userinfo, ಚುಕ್ಕೆ ಇಲ್ಲದ ಹೆಸರು, ಅಂತರರಾಷ್ಟ್ರೀಕೃತ ಹೆಸರು, fragment ಇರುವ URL.\n1. ಪ್ರತಿಯೊಂದಕ್ಕೆ lab ಏನು ಮಾಡುತ್ತದೆ ಎಂದು ದಾಖಲಿಸಿ ಮತ್ತು ತಪ್ಪು ಎನಿಸುವ ಫಲಿತಾಂಶ ಗಮನಿಸಿ.\n2. ಕನಿಷ್ಠ ಒಂದು ದೌರ್ಬಲ್ಯ ಸರಿಪಡಿಸಿ (ಉದಾ. port 0 ಅಥವಾ ಕೊನೆಯ ಚುಕ್ಕೆ ತಿರಸ್ಕಾರ) ಮತ್ತು ಮರುಚಲಾಯಿಸಿ.\n3. redirect ಗುರಿಗಳು ಅನುಸರಿಸುವ ಮೊದಲು ಅದೇ ಸಾಮಾನ್ಯೀಕರಣ ಹಾದುಹೋಗಬೇಕು ಏಕೆ?'),
+  P(2, 3, 'advanced',
+    'Extend review_action with Operation Kinds',
+    'review_action ಅನ್ನು Operation ಪ್ರಕಾರಗಳೊಂದಿಗೆ ವಿಸ್ತರಿಸಿ',
+    'The lab treats all writes alike. Split filesystem.write into create, overwrite and delete.\n1. Make create ASK, overwrite of an existing file ASK with a stronger message, and delete DENY unless an approval names the exact path and a maximum count.\n2. Add tests for each including an approval reused for a different path, which must fail.\n3. Explain how the operation kind, the path and the consequence together should drive the approval text shown to a person.',
+    'lab ಎಲ್ಲಾ writes ಅನ್ನು ಒಂದೇ ಎಂದು ಪರಿಗಣಿಸುತ್ತದೆ. filesystem.write ಅನ್ನು create, overwrite, delete ಎಂದು ವಿಭಜಿಸಿ.\n1. create ASK; ಇರುವ ಫೈಲ್ overwrite ಬಲವಾದ ಸಂದೇಶದೊಂದಿಗೆ ASK; delete ಅನ್ನು ಅನುಮೋದನೆ ನಿಖರ path ಮತ್ತು ಗರಿಷ್ಠ ಸಂಖ್ಯೆ ಹೆಸರಿಸದಿದ್ದರೆ DENY ಮಾಡಿ.\n2. ಪ್ರತಿಯೊಂದಕ್ಕೆ ಪರೀಕ್ಷೆಗಳು ಸೇರಿಸಿ, ಬೇರೆ path ಗೆ ಮರುಬಳಸಿದ ಅನುಮೋದನೆ ವಿಫಲವಾಗಬೇಕು.\n3. operation ಪ್ರಕಾರ, path ಮತ್ತು ಪರಿಣಾಮ ಸೇರಿ ವ್ಯಕ್ತಿಗೆ ತೋರಿಸುವ ಅನುಮೋದನೆ ಪಠ್ಯವನ್ನು ಹೇಗೆ ನಡೆಸಬೇಕು ಎಂದು ವಿವರಿಸಿ.'),
+
+  P(3, 1, 'beginner',
+    'Read the Container Profile',
+    'Container Profile ಓದಿ',
+    'Without running anything, take the reference docker run command from the lesson.\n1. For each flag say which single dimension it bounds and give one attack it blocks.\n2. Name three ways a container started with those same flags could still be dangerous (for example a mounted Docker socket, a shared kernel, an unpinned image).\n3. Say clearly why the lesson did not present any probe output for this command.',
+    'ಏನನ್ನೂ ಚಲಾಯಿಸದೆ ಪಾಠದ reference docker run ಕಮಾಂಡ್ ತೆಗೆದುಕೊಳ್ಳಿ.\n1. ಪ್ರತಿ flag ಯಾವ ಒಂದು ಆಯಾಮ ಸೀಮಿತಗೊಳಿಸುತ್ತದೆ ಮತ್ತು ಯಾವ ಒಂದು ದಾಳಿ ತಡೆಯುತ್ತದೆ ಎಂದು ಹೇಳಿ.\n2. ಅದೇ flags ನೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸಿದ ಕಂಟೇನರ್ ಇನ್ನೂ ಅಪಾಯಕಾರಿಯಾಗಬಹುದಾದ ಮೂರು ವಿಧಾನ ಹೆಸರಿಸಿ (ಉದಾ. mount ಮಾಡಿದ Docker socket, ಹಂಚಿದ kernel, pin ಮಾಡದ image).\n3. ಈ ಕಮಾಂಡ್‌ಗೆ ಪಾಠ ಯಾವುದೇ probe output ನೀಡಿಲ್ಲ ಏಕೆ ಎಂದು ಸ್ಪಷ್ಟವಾಗಿ ಹೇಳಿ.'),
+  P(3, 2, 'intermediate',
+    'Run the Real Sandbox Drill and Capture Evidence',
+    'ನಿಜ Sandbox Drill ಚಲಾಯಿಸಿ ಸಾಕ್ಷ್ಯ ಹಿಡಿಯಿರಿ',
+    'On a machine where Docker is running, build a tiny image whose probe prints JSON for: /input readable, root filesystem not writable, /tmp writable, outbound network failing, host credential variables absent.\n1. Run the reference command and paste the real JSON.\n2. Change one flag at a time (drop --read-only, then --network none) and show exactly which probe field flips.\n3. If you cannot run Docker, say so and instead describe the expected JSON, labelled clearly as expected and not observed.',
+    'Docker ಚಲಿಸುತ್ತಿರುವ ಯಂತ್ರದಲ್ಲಿ /input ಓದಬಹುದು, root filesystem ಬರೆಯಲಾಗದು, /tmp ಬರೆಯಬಹುದು, ಹೊರಗಿನ network ವಿಫಲ, host credential ಚರಗಳು ಇಲ್ಲ ಎಂದು JSON ಮುದ್ರಿಸುವ ಸಣ್ಣ image ನಿರ್ಮಿಸಿ.\n1. reference ಕಮಾಂಡ್ ಚಲಾಯಿಸಿ ನಿಜ JSON ಅಂಟಿಸಿ.\n2. ಒಂದೊಂದು flag ಬದಲಿಸಿ (--read-only ತೆಗೆದು, ನಂತರ --network none) ಯಾವ probe ಕ್ಷೇತ್ರ ಬದಲಾಗುತ್ತದೆ ಎಂದು ತೋರಿಸಿ.\n3. Docker ಚಲಾಯಿಸಲಾಗದಿದ್ದರೆ ಹಾಗೆ ಹೇಳಿ, ಮತ್ತು ನಿರೀಕ್ಷಿತ JSON ಅನ್ನು "ನಿರೀಕ್ಷಿತ, ವೀಕ್ಷಿಸಿದ್ದಲ್ಲ" ಎಂದು ಸ್ಪಷ್ಟವಾಗಿ ಗುರುತಿಸಿ ವಿವರಿಸಿ.'),
+  P(3, 3, 'advanced',
+    'Design the Execution Plane',
+    'Execution Plane ವಿನ್ಯಾಸಗೊಳಿಸಿ',
+    'Write an executor sketch (working code or precise pseudocode) that takes an approved immutable action and: (1) revalidates path, argv, origin and approval identity, (2) refuses if anything changed, (3) builds an allowlisted environment, (4) launches inside a sandbox profile, (5) captures exit code, output and changed files, and (6) hands the evidence to a verifier.\n1. Show one run that succeeds and one where the target changed between review and launch.\n2. Show a verifier that fails a run with exit code 0.\n3. State which parts you executed and which are design only, and never describe a design as tested.',
+    'ಅನುಮೋದಿತ ಬದಲಾಗದ ಕ್ರಿಯೆ ತೆಗೆದುಕೊಂಡು (1) path, argv, origin, ಅನುಮೋದನೆ ಗುರುತನ್ನು ಮರುಮಾನ್ಯಗೊಳಿಸುವ, (2) ಯಾವುದಾದರೂ ಬದಲಾದರೆ ನಿರಾಕರಿಸುವ, (3) ಅನುಮತಿಸಿದ environment ನಿರ್ಮಿಸುವ, (4) sandbox profile ಒಳಗೆ ಪ್ರಾರಂಭಿಸುವ, (5) exit code, output ಮತ್ತು ಬದಲಾದ ಫೈಲ್‌ಗಳನ್ನು ಹಿಡಿಯುವ, (6) ಸಾಕ್ಷ್ಯವನ್ನು verifier ಗೆ ನೀಡುವ executor ರೇಖಾಚಿತ್ರ (ಕೆಲಸ ಮಾಡುವ ಕೋಡ್ ಅಥವಾ ನಿಖರ pseudocode) ಬರೆಯಿರಿ.\n1. ಯಶಸ್ವಿ ಒಂದು run ಮತ್ತು ವಿಮರ್ಶೆ ಮತ್ತು ಪ್ರಾರಂಭದ ನಡುವೆ ಗುರಿ ಬದಲಾದ ಒಂದು run ತೋರಿಸಿ.\n2. exit code 0 ಇರುವ run ಅನ್ನು ವಿಫಲಗೊಳಿಸುವ verifier ತೋರಿಸಿ.\n3. ಯಾವ ಭಾಗಗಳನ್ನು ಚಲಾಯಿಸಿದಿರಿ, ಯಾವುದು ವಿನ್ಯಾಸ ಮಾತ್ರ ಎಂದು ಹೇಳಿ; ವಿನ್ಯಾಸವನ್ನು ಪರೀಕ್ಷಿತ ಎಂದು ಎಂದಿಗೂ ವಿವರಿಸಬೇಡಿ.'),
+];

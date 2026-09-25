@@ -1,0 +1,56 @@
+const phaseId = '6a369d5e66020ed05b3214c3'; // Phase 16: Tools and Protocols
+const moduleId = '6ab6d18eb7119db96ad77968'; // Module 271.4: Skill Evals, Packaging, and Portability
+const L = ['6ab6d65d67407def8ea56381', '6ab6d65ffb3531c494836441', '6ab6d6604193d8137b1e4cbc'];
+const P = (part, order, difficulty, title, titleKn, problem, problemKn) => ({
+  phaseId, moduleId, lessonId: L[part - 1], order, difficulty, title, titleKn, problem, problemKn,
+});
+
+module.exports = [
+  P(1, 1, 'beginner',
+    'Compute the Metrics by Hand',
+    'Metrics ಅನ್ನು ಕೈಯಿಂದ ಲೆಕ್ಕ ಹಾಕಿ',
+    'A router gives TP = 9, FP = 3, FN = 1, TN = 27.\n1. Compute precision, recall, F1 and accuracy by hand, then confirm with classification_metrics.\n2. Say which failure (over-triggering or under-triggering) is bigger and what you would change first.\n3. Why do you report the raw counts alongside the ratios?',
+    'router ನ ಫಲಿತಾಂಶ TP = 9, FP = 3, FN = 1, TN = 27.\n1. precision, recall, F1, accuracy ಅನ್ನು ಕೈಯಿಂದ ಲೆಕ್ಕ ಹಾಕಿ, ನಂತರ classification_metrics ನಿಂದ ದೃಢೀಕರಿಸಿ.\n2. ಯಾವ ವೈಫಲ್ಯ (ಅತಿ-trigger ಅಥವಾ ಕಡಿಮೆ-trigger) ದೊಡ್ಡದು ಮತ್ತು ಮೊದಲು ಏನು ಬದಲಿಸುವಿರಿ ಎಂದು ಹೇಳಿ.\n3. ಅನುಪಾತಗಳ ಜೊತೆ ಕಚ್ಚಾ ಎಣಿಕೆ ಏಕೆ ವರದಿ ಮಾಡುತ್ತೀರಿ?'),
+  P(1, 2, 'intermediate',
+    'Build a 20-Case Trigger Set',
+    '20-ಪ್ರಕರಣಗಳ Trigger ಸೆಟ್ ನಿರ್ಮಿಸಿ',
+    'For a skill of your choice write at least 20 labelled cases across positive, paraphrased-positive, clear-negative, near-miss, competing-skill and adversarial categories, split into development and validation sets.\n1. Run the lab\'s naive keyword router and your own improved router on both sets and print metrics per category.\n2. Show one case where you improved the router using only the development set and check that the validation set did not get worse.\n3. Explain how patching every failing prompt into the description leads to memorizing the set.',
+    'ನಿಮ್ಮ ಆಯ್ಕೆಯ skill ಗೆ positive, paraphrased-positive, clear-negative, near-miss, competing-skill, adversarial ವರ್ಗಗಳಲ್ಲಿ ಕನಿಷ್ಠ 20 ಲೇಬಲ್ ಮಾಡಿದ ಪ್ರಕರಣಗಳನ್ನು ಬರೆದು development ಮತ್ತು validation ಸೆಟ್‌ಗಳಾಗಿ ವಿಭಜಿಸಿ.\n1. lab ನ ಸರಳ keyword router ಮತ್ತು ನಿಮ್ಮ ಸುಧಾರಿತ router ಅನ್ನು ಎರಡೂ ಸೆಟ್‌ಗಳಲ್ಲಿ ಚಲಾಯಿಸಿ ವರ್ಗವಾರು metrics ಮುದ್ರಿಸಿ.\n2. development ಸೆಟ್ ಮಾತ್ರ ಬಳಸಿ router ಸುಧಾರಿಸಿದ ಒಂದು ಪ್ರಕರಣ ತೋರಿಸಿ, validation ಸೆಟ್ ಕೆಟ್ಟಿಲ್ಲ ಎಂದು ಪರಿಶೀಲಿಸಿ.\n3. ವಿಫಲ ಪ್ರತಿ prompt ಅನ್ನು description ಗೆ ಸೇರಿಸಿದರೆ ಸೆಟ್ ಕಂಠಪಾಠವಾಗುತ್ತದೆ ಎಂದು ವಿವರಿಸಿ.'),
+  P(1, 3, 'advanced',
+    'Extend the Linter and Fail Closed',
+    'Linter ವಿಸ್ತರಿಸಿ ಮತ್ತು Fail Closed ಮಾಡಿ',
+    'Extend lint_package with: frontmatter name equals directory name; every references/, scripts/ and assets/ path mentioned in the body exists; no symlinks that resolve outside the package; a file-size limit; and W_ warning codes distinct from E_ errors.\n1. Add tests for each rule with a passing and a failing package built in a temp directory.\n2. Show one package that parses cleanly but fails your new package-integrity rule.\n3. State which linter rules you ran and which you only designed.',
+    'lint_package ಅನ್ನು ವಿಸ್ತರಿಸಿ: frontmatter name ಡೈರೆಕ್ಟರಿ ಹೆಸರಿಗೆ ಸಮ; body ನಲ್ಲಿ ಉಲ್ಲೇಖಿಸಿದ ಪ್ರತಿ references/, scripts/, assets/ path ಇದೆ; package ಹೊರಗೆ resolve ಆಗುವ symlink ಇಲ್ಲ; ಫೈಲ್ ಗಾತ್ರ ಮಿತಿ; ಮತ್ತು E_ ದೋಷಗಳಿಂದ ಬೇರೆ W_ ಎಚ್ಚರಿಕೆ ಕೋಡ್‌ಗಳು.\n1. ಪ್ರತಿ ನಿಯಮಕ್ಕೆ temp ಡೈರೆಕ್ಟರಿಯಲ್ಲಿ ನಿರ್ಮಿಸಿದ ಪಾಸ್ ಮತ್ತು ಫೇಲ್ package ಗಳೊಂದಿಗೆ ಪರೀಕ್ಷೆ ಸೇರಿಸಿ.\n2. ಸ್ವಚ್ಛವಾಗಿ parse ಆಗುವ ಆದರೆ ನಿಮ್ಮ ಹೊಸ package-integrity ನಿಯಮ ವಿಫಲವಾಗುವ ಒಂದು package ತೋರಿಸಿ.\n3. ಯಾವ linter ನಿಯಮಗಳನ್ನು ಚಲಾಯಿಸಿದಿರಿ, ಯಾವುದನ್ನು ವಿನ್ಯಾಸ ಮಾತ್ರ ಮಾಡಿದಿರಿ ಎಂದು ತಿಳಿಸಿ.'),
+
+  P(2, 1, 'beginner',
+    'Write an Artifact Contract',
+    'Artifact Contract ಬರೆಯಿರಿ',
+    'Pick a workflow (for example a dependency-upgrade report) and write an ArtifactContract for it: required fields, closed vocabularies, evidence rule and a forbidden side effect.\n1. Write one good and one bad artifact and show evaluate_artifact on both.\n2. Add one domain check the schema cannot make (for example the evidence path exists) and show it failing.\n3. Which of your checks are structural, which domain and which need judgment?',
+    'ಒಂದು workflow ಆರಿಸಿ (ಉದಾ. dependency-upgrade ವರದಿ) ಮತ್ತು ಅದಕ್ಕೆ ArtifactContract ಬರೆಯಿರಿ: ಕಡ್ಡಾಯ ಕ್ಷೇತ್ರ, ಸೀಮಿತ ಶಬ್ದಕೋಶ, evidence ನಿಯಮ, ನಿಷೇಧಿತ side effect.\n1. ಒಂದು ಒಳ್ಳೆಯ ಮತ್ತು ಒಂದು ಕೆಟ್ಟ artifact ಬರೆದು ಎರಡರ ಮೇಲೆ evaluate_artifact ತೋರಿಸಿ.\n2. schema ಮಾಡಲಾಗದ ಒಂದು domain ಪರಿಶೀಲನೆ (ಉದಾ. evidence path ಇದೆ) ಸೇರಿಸಿ ಅದು ವಿಫಲವಾಗುವುದನ್ನು ತೋರಿಸಿ.\n3. ನಿಮ್ಮ ಯಾವ ಪರಿಶೀಲನೆಗಳು ರಚನಾತ್ಮಕ, ಯಾವವು domain, ಯಾವವಿಗೆ judgment ಬೇಕು?'),
+  P(2, 2, 'intermediate',
+    'Find the Hidden Regression',
+    'ಅಡಗಿದ Regression ಹುಡುಕಿ',
+    'Construct run lists for three tasks (five runs each, baseline and treatment) where the pooled treatment rate is higher than baseline but one task regressed.\n1. Print per-task comparisons and the pooled comparison.\n2. Add a gate rule that fails when any single task regresses by more than a chosen margin, and show it firing.\n3. Say what five runs can and cannot tell you statistically and why raw run traces matter.',
+    'ಮೂರು ಕಾರ್ಯಗಳಿಗೆ (ಪ್ರತಿಯೊಂದಕ್ಕೆ ಐದು run, baseline ಮತ್ತು treatment) run ಪಟ್ಟಿಗಳನ್ನು ರಚಿಸಿ: ಒಟ್ಟು treatment ದರ baseline ಗಿಂತ ಹೆಚ್ಚು ಆದರೆ ಒಂದು ಕಾರ್ಯ ಹಿನ್ನಡೆ.\n1. ಪ್ರತಿ ಕಾರ್ಯ ಮತ್ತು ಒಟ್ಟು ಹೋಲಿಕೆ ಮುದ್ರಿಸಿ.\n2. ಯಾವುದೇ ಒಂದು ಕಾರ್ಯ ಆಯ್ದ ಅಂತರಕ್ಕಿಂತ ಹೆಚ್ಚು ಹಿನ್ನಡೆಯಾದರೆ ವಿಫಲಗೊಳ್ಳುವ gate ನಿಯಮ ಸೇರಿಸಿ ಮತ್ತು ಅದು ಚಲಿಸುವುದನ್ನು ತೋರಿಸಿ.\n3. ಐದು runs ಸಂಖ್ಯಾಶಾಸ್ತ್ರೀಯವಾಗಿ ಏನು ಹೇಳಬಲ್ಲವು/ಹೇಳಲಾರವು ಮತ್ತು ಕಚ್ಚಾ run ಕುರುಹುಗಳು ಏಕೆ ಮುಖ್ಯ ಎಂದು ತಿಳಿಸಿ.'),
+  P(2, 3, 'advanced',
+    'Script Test Matrix and Safety Control Report',
+    'Script ಪರೀಕ್ಷಾ ಮ್ಯಾಟ್ರಿಕ್ಸ್ ಮತ್ತು Safety Control ವರದಿ',
+    'Write a small deterministic script (for example one that counts blocking findings in a JSON file) and a real unittest suite covering normal, empty, malformed, Unicode, repeated, timeout-like and oversized input.\n1. Run the suite and report the real result, including any test that fails.\n2. Write five safety cases for a skill of your choice, and for each record the control type that would enforce it (instruction-only, tool-policy, approval, sandbox, verification) with an honest note when only an instruction stands behind it.\n3. Explain why a suite of 99 passing safety cases and one failing "publish without approval" must still fail the gate.',
+    'ಒಂದು ಸಣ್ಣ ನಿರ್ಧಾರಾತ್ಮಕ script ಬರೆಯಿರಿ (ಉದಾ. JSON ಫೈಲ್‌ನಲ್ಲಿ blocking findings ಎಣಿಸುವುದು) ಮತ್ತು ಸಾಮಾನ್ಯ, ಖಾಲಿ, ವಿಕೃತ, Unicode, ಪುನರಾವರ್ತಿತ, timeout-ರೀತಿಯ ಮತ್ತು ದೊಡ್ಡ ಇನ್‌ಪುಟ್ ಒಳಗೊಂಡ ನಿಜ unittest ಸೂಟ್ ಬರೆಯಿರಿ.\n1. ಸೂಟ್ ಚಲಾಯಿಸಿ ವಿಫಲವಾದ ಯಾವುದೇ ಪರೀಕ್ಷೆ ಸೇರಿ ನಿಜ ಫಲಿತಾಂಶ ವರದಿ ಮಾಡಿ.\n2. ನಿಮ್ಮ ಆಯ್ಕೆಯ skill ಗೆ ಐದು safety ಪ್ರಕರಣ ಬರೆದು ಪ್ರತಿಯೊಂದನ್ನು ಜಾರಿಗೊಳಿಸುವ control ಪ್ರಕಾರ (instruction-only, tool-policy, approval, sandbox, verification) ದಾಖಲಿಸಿ; ಸೂಚನೆ ಮಾತ್ರ ಇದ್ದರೆ ಪ್ರಾಮಾಣಿಕ ಟಿಪ್ಪಣಿ ಸೇರಿಸಿ.\n3. 99 safety ಪ್ರಕರಣ ಪಾಸ್ ಮತ್ತು ಒಂದು "ಅನುಮೋದನೆ ಇಲ್ಲದೆ publish" ವಿಫಲವಾದರೂ gate ವಿಫಲವಾಗಬೇಕು ಏಕೆ ಎಂದು ವಿವರಿಸಿ.'),
+
+  P(3, 1, 'beginner',
+    'Verify a Tree Against Its Manifest',
+    'Tree ಅನ್ನು ಅದರ Manifest ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಿ',
+    'Build a small skill directory in a temp folder, build its manifest and verify it.\n1. Then, one at a time, change a file, delete a file and add a stale file, and show which class each is reported in.\n2. Why does the manifest exclude assets/manifest.json?\n3. A colleague says "the hashes match, so it is safe". Answer them in two sentences.',
+    'temp ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಸಣ್ಣ skill ಡೈರೆಕ್ಟರಿ ನಿರ್ಮಿಸಿ, ಅದರ manifest ನಿರ್ಮಿಸಿ ಪರಿಶೀಲಿಸಿ.\n1. ನಂತರ ಒಂದೊಂದಾಗಿ ಫೈಲ್ ಬದಲಿಸಿ, ಫೈಲ್ ಅಳಿಸಿ, ಹಳೆಯ ಫೈಲ್ ಸೇರಿಸಿ ಮತ್ತು ಪ್ರತಿಯೊಂದು ಯಾವ ವರ್ಗದಲ್ಲಿ ವರದಿಯಾಗುತ್ತದೆ ಎಂದು ತೋರಿಸಿ.\n2. manifest assets/manifest.json ಅನ್ನು ಏಕೆ ಹೊರಗಿಡುತ್ತದೆ?\n3. ಸಹೋದ್ಯೋಗಿ "hash ಗಳು ಹೊಂದುತ್ತವೆ, ಆದ್ದರಿಂದ ಸುರಕ್ಷಿತ" ಎನ್ನುತ್ತಾರೆ. ಎರಡು ವಾಕ್ಯಗಳಲ್ಲಿ ಉತ್ತರಿಸಿ.'),
+  P(3, 2, 'intermediate',
+    'Design a Capability Matrix with Evidence',
+    'ಸಾಕ್ಷ್ಯದೊಂದಿಗೆ Capability Matrix ವಿನ್ಯಾಸಗೊಳಿಸಿ',
+    'Take a package that needs filesystem.read, process.run and approvals, and optionally implicit invocation.\n1. Define three hosts with different capabilities, adapters and fallbacks and print the matrix.\n2. For each non-native cell say what test or official contract would justify the claim and how you would record "unverified" when the host does not expose a field.\n3. Write the install-time message a user should see for each host so that nothing degrades silently.',
+    'filesystem.read, process.run ಮತ್ತು approvals ಬೇಕಾದ ಮತ್ತು ಐಚ್ಛಿಕವಾಗಿ implicit invocation ಬೇಕಾದ package ತೆಗೆದುಕೊಳ್ಳಿ.\n1. ಬೇರೆ ಬೇರೆ capabilities, adapters, fallbacks ಇರುವ ಮೂರು hosts ವ್ಯಾಖ್ಯಾನಿಸಿ ಮ್ಯಾಟ್ರಿಕ್ಸ್ ಮುದ್ರಿಸಿ.\n2. ಪ್ರತಿ ಸ್ಥಳೀಯವಲ್ಲದ ಕೋಶಕ್ಕೆ ಹೇಳಿಕೆಯನ್ನು ಸಮರ್ಥಿಸುವ ಪರೀಕ್ಷೆ ಅಥವಾ ಅಧಿಕೃತ ಒಪ್ಪಂದ ಮತ್ತು host ಕ್ಷೇತ್ರ ಒಡ್ಡದಿದ್ದಾಗ "unverified" ಹೇಗೆ ದಾಖಲಿಸುವಿರಿ ಎಂದು ತಿಳಿಸಿ.\n3. ಯಾವುದೂ ಮೌನವಾಗಿ ಅವನತಿಯಾಗದಂತೆ ಪ್ರತಿ host ಗೆ ಬಳಕೆದಾರ ನೋಡಬೇಕಾದ install ಸಂದೇಶ ಬರೆಯಿರಿ.'),
+  P(3, 3, 'advanced',
+    'Gate, Evidence Root and a Forgery Test',
+    'Gate, Evidence Root ಮತ್ತು Forgery ಪರೀಕ್ಷೆ',
+    'Using the lab as a base:\n1. Add a gate rule that treats a required capability reported as "degraded" as a failure unless a documented fallback flag is set, and show both outcomes.\n2. Write a test that builds the evidenceRoot, forges a modified bundle with a recomputed root and attestation, and shows it passing every local check but failing against a trusted digest you keep in a separate file.\n3. Explain honestly what your separate file does and does not prove compared with a real signed release or registry record, and list what a real-host checkpoint would still have to show before anything is called production-ready.',
+    'lab ಅನ್ನು ಆಧಾರವಾಗಿ ಬಳಸಿ:\n1. ಕಡ್ಡಾಯ capability "degraded" ಎಂದು ವರದಿಯಾದರೆ ದಾಖಲಿತ fallback flag ಇಲ್ಲದಿದ್ದರೆ ವಿಫಲ ಎಂದು ಪರಿಗಣಿಸುವ gate ನಿಯಮ ಸೇರಿಸಿ, ಎರಡೂ ಫಲಿತಾಂಶ ತೋರಿಸಿ.\n2. evidenceRoot ನಿರ್ಮಿಸಿ, ಮರುಲೆಕ್ಕ ಹಾಕಿದ root ಮತ್ತು attestation ಜೊತೆ ಬದಲಿಸಿದ bundle ರಚಿಸಿ, ಅದು ಎಲ್ಲಾ ಸ್ಥಳೀಯ ಪರಿಶೀಲನೆ ಪಾಸ್ ಆಗಿ ಪ್ರತ್ಯೇಕ ಫೈಲ್‌ನಲ್ಲಿ ಇರಿಸಿದ ವಿಶ್ವಾಸಾರ್ಹ digest ವಿರುದ್ಧ ವಿಫಲವಾಗುವುದನ್ನು ತೋರಿಸುವ ಪರೀಕ್ಷೆ ಬರೆಯಿರಿ.\n3. ನಿಮ್ಮ ಪ್ರತ್ಯೇಕ ಫೈಲ್ ನಿಜ ಸಹಿ ಮಾಡಿದ ಬಿಡುಗಡೆ ಅಥವಾ registry ದಾಖಲೆಗೆ ಹೋಲಿಸಿದರೆ ಏನನ್ನು ಸಾಬೀತುಪಡಿಸುತ್ತದೆ/ಸಾಬೀತುಪಡಿಸುವುದಿಲ್ಲ ಎಂದು ಪ್ರಾಮಾಣಿಕವಾಗಿ ವಿವರಿಸಿ, ಮತ್ತು ಯಾವುದನ್ನಾದರೂ production-ಸಿದ್ಧ ಎನ್ನುವ ಮೊದಲು ನಿಜ-host checkpoint ಇನ್ನೂ ಏನು ತೋರಿಸಬೇಕು ಎಂದು ಪಟ್ಟಿ ಮಾಡಿ.'),
+];

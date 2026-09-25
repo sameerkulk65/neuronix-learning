@@ -1,0 +1,56 @@
+const phaseId = '6a369d5e66020ed05b3214c3'; // Phase 16: Tools and Protocols
+const moduleId = '6ab6d18eb7119db96ad77966'; // Module 271.2: Skill Invocation and Routing
+const L = ['6ab6d384030bdeed8965348b', '6ab6d3863a981c53818fbc1e', '6ab6d38798834532be630e7d'];
+const P = (part, order, difficulty, title, titleKn, problem, problemKn) => ({
+  phaseId, moduleId, lessonId: L[part - 1], order, difficulty, title, titleKn, problem, problemKn,
+});
+
+module.exports = [
+  P(1, 1, 'beginner',
+    'Fill in the 2x2',
+    '2x2 ಅನ್ನು ತುಂಬಿ',
+    'Using build_invocation_matrix, print the matrix for four policies of your own.\n1. For each of shared, human-only, model-only and disabled-or-application-only, give one realistic skill that belongs there and why.\n2. Which mode would you give to production-database-cleanup, and what does that say about routing quality versus authority design?\n3. Write one sentence on why a single invocable Boolean cannot express your four examples.',
+    'build_invocation_matrix ಬಳಸಿ ನಿಮ್ಮದೇ ನಾಲ್ಕು policies ಗೆ ಮ್ಯಾಟ್ರಿಕ್ಸ್ ಮುದ್ರಿಸಿ.\n1. shared, human-only, model-only, disabled-or-application-only ಪ್ರತಿಯೊಂದಕ್ಕೆ ಒಂದು ವಾಸ್ತವಿಕ skill ಮತ್ತು ಕಾರಣ ನೀಡಿ.\n2. production-database-cleanup ಗೆ ಯಾವ ಮೋಡ್ ನೀಡುವಿರಿ, ಮತ್ತು ಅದು routing ಗುಣಮಟ್ಟ vs ಅಧಿಕಾರ ವಿನ್ಯಾಸದ ಬಗ್ಗೆ ಏನು ಹೇಳುತ್ತದೆ?\n3. ಒಂದೇ invocable Boolean ನಿಮ್ಮ ನಾಲ್ಕು ಉದಾಹರಣೆಗಳನ್ನು ವ್ಯಕ್ತಪಡಿಸಲಾರದು ಏಕೆ ಎಂದು ಒಂದು ವಾಕ್ಯದಲ್ಲಿ ಬರೆಯಿರಿ.'),
+  P(1, 2, 'intermediate',
+    'Four Outcomes, Four Requests',
+    'ನಾಲ್ಕು ಫಲಿತಾಂಶಗಳು, ನಾಲ್ಕು ಕೋರಿಕೆಗಳು',
+    'Write four requests against the lab catalog so that route_request returns selected, denied, abstained and not_found, once each.\n1. Show the printed decisions.\n2. Add a fifth request that returns denied for a different reason (the exact-name allowlist) and show the policy source.\n3. Why must not_found never be answered by quietly picking a similar skill?',
+    'lab catalog ವಿರುದ್ಧ ನಾಲ್ಕು ಕೋರಿಕೆಗಳನ್ನು ಬರೆಯಿರಿ, route_request selected, denied, abstained, not_found ಒಮ್ಮೊಮ್ಮೆ ಹಿಂತಿರುಗಿಸಲಿ.\n1. ಮುದ್ರಿತ ನಿರ್ಧಾರಗಳನ್ನು ತೋರಿಸಿ.\n2. ಬೇರೆ ಕಾರಣಕ್ಕೆ (exact-name allowlist) denied ನೀಡುವ ಐದನೇ ಕೋರಿಕೆ ಸೇರಿಸಿ ಮತ್ತು policy source ತೋರಿಸಿ.\n3. not_found ಗೆ ಸಮಾನ skill ಅನ್ನು ಮೌನವಾಗಿ ಆರಿಸಿ ಉತ್ತರಿಸಬಾರದು ಏಕೆ?'),
+  P(1, 3, 'advanced',
+    'Design Actor Policy for a Real Workflow',
+    'ನಿಜ Workflow ಗೆ Actor Policy ವಿನ್ಯಾಸಗೊಳಿಸಿ',
+    'A team has skills: release-readiness, build-diagnostics, database-migration, security-change-review, documentation-review.\n1. Give each one an InvocationPolicy (all six actors) with a one-line justification, including which should be human-only.\n2. Add an exact-name allowlist for the application actor and explain what it protects against.\n3. Describe how a test harness could accidentally bypass this policy, and write the routing test that would catch it.',
+    'ತಂಡದ skills: release-readiness, build-diagnostics, database-migration, security-change-review, documentation-review.\n1. ಪ್ರತಿಯೊಂದಕ್ಕೆ ಆರು actors ಗೂ InvocationPolicy ಮತ್ತು ಒಂದು ಸಾಲಿನ ಸಮರ್ಥನೆ ನೀಡಿ; ಯಾವುದು human-only ಆಗಬೇಕು ಎಂದು ತಿಳಿಸಿ.\n2. application actor ಗೆ exact-name allowlist ಸೇರಿಸಿ ಮತ್ತು ಅದು ಯಾವುದರಿಂದ ರಕ್ಷಿಸುತ್ತದೆ ಎಂದು ವಿವರಿಸಿ.\n3. test harness ಈ policy ಅನ್ನು ಆಕಸ್ಮಿಕವಾಗಿ ದಾಟುವ ವಿಧಾನ ವಿವರಿಸಿ ಮತ್ತು ಅದನ್ನು ಹಿಡಿಯುವ routing ಪರೀಕ್ಷೆ ಬರೆಯಿರಿ.'),
+
+  P(2, 1, 'beginner',
+    'Threshold and Margin by Hand',
+    'Threshold ಮತ್ತು Margin ಕೈಯಿಂದ',
+    'For each score set decide select or abstain with threshold 0.70 and margin 0.10 and show your working:\n(a) 0.31, 0.24, 0.10   (b) 0.89, 0.30, 0.11   (c) 0.81, 0.79   (d) 0.82, 0.60, 0.20   (e) no eligible skills at all.\nThen run the lab router on a case of your own for each result.',
+    'ಪ್ರತಿ score ಗುಂಪಿಗೆ threshold 0.70 ಮತ್ತು margin 0.10 ನೊಂದಿಗೆ select ಅಥವಾ abstain ನಿರ್ಧರಿಸಿ, ಲೆಕ್ಕ ತೋರಿಸಿ:\n(a) 0.31, 0.24, 0.10   (b) 0.89, 0.30, 0.11   (c) 0.81, 0.79   (d) 0.82, 0.60, 0.20   (e) ಅರ್ಹ skills ಇಲ್ಲವೇ ಇಲ್ಲ.\nನಂತರ ಪ್ರತಿ ಫಲಿತಾಂಶಕ್ಕೆ ನಿಮ್ಮದೇ ಪ್ರಕರಣದೊಂದಿಗೆ lab router ಚಲಾಯಿಸಿ.'),
+  P(2, 2, 'intermediate',
+    'Build a Near-Miss Test Suite',
+    'Near-Miss ಪರೀಕ್ಷಾ ಸೂಟ್ ನಿರ್ಮಿಸಿ',
+    'Write a routing suite of at least 12 cases against the lab catalog: positives, clear negatives and near misses for release-readiness and build-diagnostics.\n1. Print each case with expected and actual and a PASS or FAIL, and the totals per category.\n2. Find at least one failing case (the toy scorer will have some) and explain whether the description, the term lists or the threshold is at fault.\n3. Explain why a suite of only easy negatives would have hidden the failure.',
+    'lab catalog ವಿರುದ್ಧ ಕನಿಷ್ಠ 12 ಪ್ರಕರಣಗಳ routing ಸೂಟ್ ಬರೆಯಿರಿ: release-readiness ಮತ್ತು build-diagnostics ಗೆ positives, clear negatives, near misses.\n1. ಪ್ರತಿ ಪ್ರಕರಣ ನಿರೀಕ್ಷಿತ, ವಾಸ್ತವ, PASS/FAIL ಮತ್ತು ವರ್ಗವಾರು ಮೊತ್ತ ಮುದ್ರಿಸಿ.\n2. ಕನಿಷ್ಠ ಒಂದು ವಿಫಲ ಪ್ರಕರಣ ಹುಡುಕಿ (ಆಟಿಕೆ scorer ಗೆ ಕೆಲವು ಇರುತ್ತವೆ) ಮತ್ತು description, term ಪಟ್ಟಿ ಅಥವಾ threshold ಯಾವುದರ ದೋಷ ಎಂದು ವಿವರಿಸಿ.\n3. ಸುಲಭ negatives ಮಾತ್ರ ಇದ್ದ ಸೂಟ್ ಈ ವೈಫಲ್ಯ ಮರೆಮಾಡುತ್ತಿತ್ತು ಏಕೆ?'),
+  P(2, 3, 'advanced',
+    'Safe Composition and Resume',
+    'ಸುರಕ್ಷಿತ Composition ಮತ್ತು Resume',
+    'Extend the lab.\n1. Implement invoke_skill(inv, path, router) that first runs validate_composition, then routes the child with Actor.SKILL (so a skill with skill=False is denied), and returns a structured result including the path.\n2. Add a state file helper with an idempotency key and a resume(state, current_commit) function that revalidates the commit and refuses to repeat a recorded external write. Simulate an interrupted run and a resumed run and show both outputs.\n3. State clearly which parts you ran and which remain design only.',
+    'lab ವಿಸ್ತರಿಸಿ.\n1. ಮೊದಲು validate_composition ಚಲಾಯಿಸಿ, ನಂತರ child ಅನ್ನು Actor.SKILL ನೊಂದಿಗೆ route ಮಾಡಿ (skill=False ಇರುವ skill ನಿರಾಕರಿಸಲ್ಪಡುತ್ತದೆ), path ಸೇರಿದ ರಚನಾತ್ಮಕ ಫಲಿತಾಂಶ ನೀಡುವ invoke_skill(inv, path, router) ಅನುಷ್ಠಾನಿಸಿ.\n2. idempotency key ಇರುವ state ಫೈಲ್ ಸಹಾಯಕ ಮತ್ತು commit ಮರುಮಾನ್ಯಗೊಳಿಸಿ ದಾಖಲಾದ external write ಪುನರಾವರ್ತಿಸದ resume(state, current_commit) ಸೇರಿಸಿ. ಅಡ್ಡಿಯಾದ ಮತ್ತು ಪುನರಾರಂಭಿಸಿದ run ಅನುಕರಿಸಿ ಎರಡೂ outputs ತೋರಿಸಿ.\n3. ಯಾವ ಭಾಗಗಳನ್ನು ಚಲಾಯಿಸಿದಿರಿ ಮತ್ತು ಯಾವುದು ವಿನ್ಯಾಸ ಮಾತ್ರ ಎಂದು ಸ್ಪಷ್ಟವಾಗಿ ತಿಳಿಸಿ.'),
+
+  P(3, 1, 'beginner',
+    'Core versus Extension Adapter',
+    'Core vs Extension Adapter',
+    'Create a skill whose core policy allows the model but which carries the host extension allow_implicit_invocation: false.\n1. Show core.actor_allowed and ext.actor_allowed for Actor.MODEL, Actor.AUTONOMOUS_AGENT and Actor.HUMAN and explain each result.\n2. Add a fourth field of your own invention to host_extensions and show that neither adapter changes behaviour because it is not recognised.\n3. Why should an unknown field never be given meaning by the core adapter?',
+    'core policy ಮಾದರಿಗೆ ಅನುಮತಿಸುವ ಆದರೆ allow_implicit_invocation: false host extension ಇರುವ skill ರಚಿಸಿ.\n1. Actor.MODEL, Actor.AUTONOMOUS_AGENT, Actor.HUMAN ಗೆ core.actor_allowed ಮತ್ತು ext.actor_allowed ತೋರಿಸಿ, ಪ್ರತಿ ಫಲಿತಾಂಶ ವಿವರಿಸಿ.\n2. ನೀವೇ ಕಲ್ಪಿಸಿದ ನಾಲ್ಕನೇ ಕ್ಷೇತ್ರ host_extensions ಗೆ ಸೇರಿಸಿ, ಗುರುತಿಸದ ಕಾರಣ ಯಾವ adapter ನ ವರ್ತನೆಯೂ ಬದಲಾಗುವುದಿಲ್ಲ ಎಂದು ತೋರಿಸಿ.\n3. ತಿಳಿಯದ ಕ್ಷೇತ್ರಕ್ಕೆ core adapter ಎಂದಿಗೂ ಅರ್ಥ ನೀಡಬಾರದು ಏಕೆ?'),
+  P(3, 2, 'intermediate',
+    'Add an Adapter for a New Host',
+    'ಹೊಸ Host ಗೆ Adapter ಸೇರಿಸಿ',
+    'Host B exposes two frontmatter fields: visibility (public, hidden) and auto (true, false).\n1. Write HostBPolicyAdapter(CorePolicyAdapter) that maps hidden to blocking humans from menus only (not from explicit invocation) and auto false to blocking model selection, returning a specific policy source string each time.\n2. Run the lab decisions through it and show that route_request needed no changes.\n3. What does that tell you about where host-specific knowledge should live?',
+    'Host B ಎರಡು frontmatter ಕ್ಷೇತ್ರಗಳನ್ನು ನೀಡುತ್ತದೆ: visibility (public, hidden) ಮತ್ತು auto (true, false).\n1. hidden ಅನ್ನು ಮೆನುಗಳಿಂದ ಮಾತ್ರ ಮಾನವರನ್ನು ತಡೆಯುವುದಾಗಿ (ಸ್ಪಷ್ಟ ಕರೆಯಿಂದಲ್ಲ) ಮತ್ತು auto false ಅನ್ನು ಮಾದರಿ ಆಯ್ಕೆ ತಡೆಯುವುದಾಗಿ ನಕ್ಷೆ ಮಾಡುವ HostBPolicyAdapter(CorePolicyAdapter) ಬರೆಯಿರಿ; ಪ್ರತಿ ಬಾರಿ ನಿರ್ದಿಷ್ಟ policy source ಹಿಂತಿರುಗಿಸಿ.\n2. lab ನಿರ್ಧಾರಗಳನ್ನು ಇದರ ಮೂಲಕ ಚಲಾಯಿಸಿ; route_request ಗೆ ಬದಲಾವಣೆ ಬೇಕಿರಲಿಲ್ಲ ಎಂದು ತೋರಿಸಿ.\n3. host-ನಿರ್ದಿಷ್ಟ ಜ್ಞಾನ ಎಲ್ಲಿರಬೇಕು ಎಂಬುದನ್ನು ಇದು ಏನು ಹೇಳುತ್ತದೆ?'),
+  P(3, 3, 'advanced',
+    'Invocation Contract as Executable Tests',
+    'Invocation Contract ಅನ್ನು ಕಾರ್ಯಗತ ಪರೀಕ್ಷೆಗಳಾಗಿ',
+    'Take the lesson\'s invocation contract for release-readiness (human allow, model deny, application allow, skill deny; candidate required; publish fixed_false; ambiguity ask_user; missing_dependency stop; max depth 2).\n1. Write a parser for a small dict form of the contract and generate unittest cases from it: one per actor, one per argument rule, one for depth.\n2. Run the tests against the lab and show the results, including one deliberate contract violation that the tests catch.\n3. Explain why this contract must not be presented as standard SKILL.md frontmatter and what an adapter does with it instead.',
+    'release-readiness ಗಾಗಿ ಪಾಠದ invocation contract ತೆಗೆದುಕೊಳ್ಳಿ (human allow, model deny, application allow, skill deny; candidate ಕಡ್ಡಾಯ; publish fixed_false; ambiguity ask_user; missing_dependency stop; ಗರಿಷ್ಠ ಆಳ 2).\n1. contract ನ ಸಣ್ಣ dict ರೂಪದ parser ಬರೆದು ಅದರಿಂದ unittest ಪ್ರಕರಣಗಳನ್ನು ಉತ್ಪಾದಿಸಿ: ಪ್ರತಿ actor ಗೆ ಒಂದು, ಪ್ರತಿ argument ನಿಯಮಕ್ಕೆ ಒಂದು, ಆಳಕ್ಕೆ ಒಂದು.\n2. lab ವಿರುದ್ಧ ಪರೀಕ್ಷೆಗಳನ್ನು ಚಲಾಯಿಸಿ ಫಲಿತಾಂಶ ತೋರಿಸಿ, ಪರೀಕ್ಷೆಗಳು ಹಿಡಿಯುವ ಒಂದು ಉದ್ದೇಶಪೂರ್ವಕ contract ಉಲ್ಲಂಘನೆ ಸೇರಿ.\n3. ಈ contract ಅನ್ನು ಮಾನದಂಡ SKILL.md frontmatter ಎಂದು ಏಕೆ ಪ್ರಸ್ತುತಪಡಿಸಬಾರದು, ಮತ್ತು adapter ಅದನ್ನು ಏನು ಮಾಡುತ್ತದೆ ಎಂದು ವಿವರಿಸಿ.'),
+];

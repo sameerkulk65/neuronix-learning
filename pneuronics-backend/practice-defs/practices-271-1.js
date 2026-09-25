@@ -1,0 +1,56 @@
+const phaseId = '6a369d5e66020ed05b3214c3'; // Phase 16: Tools and Protocols
+const moduleId = '6ab6d18eb7119db96ad77965'; // Module 271.1: Skill Discovery and Progressive Disclosure
+const L = ['6ab6d248bfdfbf43efab23dc', '6ab6d249427ffddfa3e4fcbe', '6ab6d24ab2938fd88e68c9d6'];
+const P = (part, order, difficulty, title, titleKn, problem, problemKn) => ({
+  phaseId, moduleId, lessonId: L[part - 1], order, difficulty, title, titleKn, problem, problemKn,
+});
+
+module.exports = [
+  P(1, 1, 'beginner',
+    'Trace the Discovery Pipeline',
+    'Discovery Pipeline ಅನ್ನು ಅನುಸರಿಸಿ',
+    'Run the discovery lab and read section 1 and 2 of its output.\n1. Name the four candidates discovery looked at, which were published as candidates, and which was rejected and why.\n2. Which two things in the workspace folder were never candidates and why (a nested example/SKILL.md and notes.txt)?\n3. Why does the lab keep rejected, shadowed and omitted lists instead of swallowing failures?',
+    'discovery lab ಚಲಾಯಿಸಿ ಅದರ output ನ ವಿಭಾಗ 1 ಮತ್ತು 2 ಓದಿ.\n1. discovery ನೋಡಿದ ನಾಲ್ಕು ಅಭ್ಯರ್ಥಿಗಳನ್ನು ಹೆಸರಿಸಿ; ಯಾವುದು ಅಭ್ಯರ್ಥಿಯಾಗಿ ಪ್ರಕಟವಾಯಿತು, ಯಾವುದು ಏಕೆ ತಿರಸ್ಕೃತ.\n2. workspace ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಯಾವ ಎರಡು ವಿಷಯಗಳು ಎಂದಿಗೂ ಅಭ್ಯರ್ಥಿಗಳಾಗಿರಲಿಲ್ಲ ಮತ್ತು ಏಕೆ (ಒಳಗಿನ example/SKILL.md ಮತ್ತು notes.txt)?\n3. lab ವೈಫಲ್ಯಗಳನ್ನು ನುಂಗುವ ಬದಲು rejected, shadowed, omitted ಪಟ್ಟಿ ಏಕೆ ಇರಿಸುತ್ತದೆ?'),
+  P(1, 2, 'intermediate',
+    'Design a Collision Policy',
+    'Collision ನೀತಿ ವಿನ್ಯಾಸಗೊಳಿಸಿ',
+    'The lab uses highest-rank-wins with ambiguity on ties.\n1. Add an administrator scope with rank 200 and a built-in scope with rank 10 and show which release-readiness wins.\n2. Implement the fourth policy (qualify names by source, for example workspace/release-readiness) and show both entries visible in the catalog.\n3. When would you prefer each of the four policies (keep all, highest wins, reject duplicates, qualify names)? Give one situation per policy.',
+    'lab ಹೆಚ್ಚು-rank-ಗೆಲ್ಲುತ್ತದೆ ಮತ್ತು ಸಮಾನತೆ ಅಸ್ಪಷ್ಟ ಎಂಬ ನೀತಿ ಬಳಸುತ್ತದೆ.\n1. rank 200 ರ administrator scope ಮತ್ತು rank 10 ರ built-in scope ಸೇರಿಸಿ, ಯಾವ release-readiness ಗೆಲ್ಲುತ್ತದೆ ತೋರಿಸಿ.\n2. ನಾಲ್ಕನೇ ನೀತಿಯನ್ನು (ಮೂಲದ ಹೆಸರಿನಿಂದ ಅರ್ಹಗೊಳಿಸಿ, ಉದಾ. workspace/release-readiness) ಅನುಷ್ಠಾನಿಸಿ, ಎರಡೂ entries catalog ನಲ್ಲಿ ಕಾಣುತ್ತವೆ ಎಂದು ತೋರಿಸಿ.\n3. ನಾಲ್ಕು ನೀತಿಗಳಲ್ಲಿ ಪ್ರತಿಯೊಂದನ್ನು ಯಾವಾಗ ಆದ್ಯತೆ ನೀಡುವಿರಿ? ಪ್ರತಿಯೊಂದಕ್ಕೆ ಒಂದು ಸನ್ನಿವೇಶ ನೀಡಿ.'),
+  P(1, 3, 'advanced',
+    'Budget-Aware Catalog with Truncation Rules',
+    'ಬಜೆಟ್-ಅರಿವಿನ Catalog ಮತ್ತು Truncation ನಿಯಮಗಳು',
+    'The lab omits entries that do not fit.\n1. Change build_catalog so that when an entry does not fit it first tries a shortened description (keeping the capability clause and cutting from the end) before omitting it, and records "shortened" in diagnostics.\n2. Add a rule that never publishes an entry whose shortened description loses the trigger clause; omit it instead.\n3. Test with budgets 200, 330 and 10000 and show diagnostics for each. Explain why the budget is measured on the serialized entry rather than on description length.',
+    'lab ಹೊಂದದ entries ಅನ್ನು omit ಮಾಡುತ್ತದೆ.\n1. entry ಹೊಂದದಿದ್ದರೆ omit ಮಾಡುವ ಮೊದಲು ಸಂಕ್ಷಿಪ್ತ description (capability ಉಪವಾಕ್ಯ ಉಳಿಸಿ ಕೊನೆಯಿಂದ ಕತ್ತರಿಸಿ) ಪ್ರಯತ್ನಿಸುವಂತೆ build_catalog ಬದಲಿಸಿ ಮತ್ತು diagnostics ನಲ್ಲಿ "shortened" ದಾಖಲಿಸಿ.\n2. ಸಂಕ್ಷಿಪ್ತ description trigger ಉಪವಾಕ್ಯ ಕಳೆದುಕೊಂಡರೆ ಆ entry ಅನ್ನು ಪ್ರಕಟಿಸದೆ omit ಮಾಡುವ ನಿಯಮ ಸೇರಿಸಿ.\n3. ಬಜೆಟ್ 200, 330, 10000 ನೊಂದಿಗೆ ಪರೀಕ್ಷಿಸಿ ಪ್ರತಿಯೊಂದಕ್ಕೆ diagnostics ತೋರಿಸಿ. ಬಜೆಟ್ ಅನ್ನು description ಉದ್ದದ ಬದಲು serialized entry ಮೇಲೆ ಏಕೆ ಅಳೆಯುತ್ತೇವೆ?'),
+
+  P(2, 1, 'beginner',
+    'Write a Decision Map',
+    'Decision Map ಬರೆಯಿರಿ',
+    'Write a SKILL.md body for a skill called log-triage with three branches: Python tracebacks, nginx errors and database timeouts.\n1. Give each branch an observable load condition and a direct reference file name.\n2. Include a failure behaviour and an expected output.\n3. Rewrite one instruction as a bad example ("read the references as needed") and explain what the model would do with it.',
+    'log-triage skill ಗೆ SKILL.md body ಬರೆಯಿರಿ, ಮೂರು branches: Python tracebacks, nginx ದೋಷಗಳು, database timeouts.\n1. ಪ್ರತಿ branch ಗೆ ವೀಕ್ಷಿಸಬಹುದಾದ ಲೋಡ್ ಷರತ್ತು ಮತ್ತು ನೇರ reference ಫೈಲ್ ಹೆಸರು ನೀಡಿ.\n2. ವೈಫಲ್ಯ ವರ್ತನೆ ಮತ್ತು ನಿರೀಕ್ಷಿತ output ಸೇರಿಸಿ.\n3. ಒಂದು ಸೂಚನೆಯನ್ನು ಕೆಟ್ಟ ಉದಾಹರಣೆಯಾಗಿ ("ಅಗತ್ಯವಿದ್ದಂತೆ references ಓದಿ") ಬರೆದು ಮಾದರಿ ಏನು ಮಾಡುತ್ತದೆ ಎಂದು ವಿವರಿಸಿ.'),
+  P(2, 2, 'intermediate',
+    'Audit Disclosure Events',
+    'Disclosure ಘಟನೆಗಳನ್ನು ಪರಿಶೋಧಿಸಿ',
+    'Given a list of skill.resource.loaded events, write audit(events) that flags a skill whose events have vague reasons ("may be useful", "just in case") or that loaded more resources than its branch table allows.\n1. Build one healthy log and one "load everything" log and show audit output for both.\n2. Add a max-bytes-per-task check and show it firing.\n3. Why is the reason field the most valuable one for finding a failing decision map?',
+    'skill.resource.loaded ಘಟನೆಗಳ ಪಟ್ಟಿ ಕೊಟ್ಟಾಗ, ಅಸ್ಪಷ್ಟ reasons ("ಉಪಯುಕ್ತವಾಗಬಹುದು", "ಸುಮ್ಮನೆ") ಅಥವಾ branch ಕೋಷ್ಟಕ ಅನುಮತಿಸುವುದಕ್ಕಿಂತ ಹೆಚ್ಚು resources ಲೋಡ್ ಮಾಡಿದ skill ಅನ್ನು ಗುರುತಿಸುವ audit(events) ಬರೆಯಿರಿ.\n1. ಆರೋಗ್ಯಕರ ಲಾಗ್ ಮತ್ತು "ಎಲ್ಲವನ್ನೂ ಲೋಡ್" ಲಾಗ್ ನಿರ್ಮಿಸಿ ಎರಡಕ್ಕೂ audit output ತೋರಿಸಿ.\n2. ಪ್ರತಿ ಕಾರ್ಯ ಗರಿಷ್ಠ-ಬೈಟ್ ಪರಿಶೀಲನೆ ಸೇರಿಸಿ.\n3. ವಿಫಲ decision map ಹುಡುಕಲು reason ಕ್ಷೇತ್ರ ಅತ್ಯಂತ ಮೌಲ್ಯಯುತ ಏಕೆ?'),
+  P(2, 3, 'advanced',
+    'Measure Active Context Honestly',
+    'Active Context ಅನ್ನು ಪ್ರಾಮಾಣಿಕವಾಗಿ ಅಳೆಯಿರಿ',
+    'The lab prints catalog cost and active cost for a tiny world, and warns that this is not a saving claim.\n1. Build a larger synthetic world (for example 50 skills, references of 1 KB to 20 KB) and compare: catalog cost, active cost with one reference, and active cost if every reference of the chosen skill were loaded.\n2. Show one case where a small catalog hides a huge active cost, and one where a big catalog hides a small active cost.\n3. Write two sentences on what this measurement does and does not tell you about the model\'s real token usage.',
+    'lab ಸಣ್ಣ ಜಗತ್ತಿಗೆ catalog ಮತ್ತು active ವೆಚ್ಚ ಮುದ್ರಿಸುತ್ತದೆ ಮತ್ತು ಇದು ಉಳಿತಾಯ ಹೇಳಿಕೆ ಅಲ್ಲ ಎಂದು ಎಚ್ಚರಿಸುತ್ತದೆ.\n1. ದೊಡ್ಡ ಕೃತಕ ಜಗತ್ತು ನಿರ್ಮಿಸಿ (ಉದಾ. 50 skills, 1 KB ಯಿಂದ 20 KB references) ಮತ್ತು ಹೋಲಿಸಿ: catalog ವೆಚ್ಚ, ಒಂದು reference ಇರುವ active ವೆಚ್ಚ, ಆಯ್ದ skill ನ ಎಲ್ಲಾ references ಲೋಡ್ ಆದರೆ active ವೆಚ್ಚ.\n2. ಸಣ್ಣ catalog ದೊಡ್ಡ active ವೆಚ್ಚ ಮರೆಮಾಡುವ ಮತ್ತು ದೊಡ್ಡ catalog ಸಣ್ಣ active ವೆಚ್ಚ ಮರೆಮಾಡುವ ಒಂದೊಂದು ಪ್ರಕರಣ ತೋರಿಸಿ.\n3. ಈ ಅಳತೆ ಮಾದರಿಯ ನಿಜ token ಬಳಕೆ ಬಗ್ಗೆ ಏನು ಹೇಳುತ್ತದೆ ಮತ್ತು ಏನು ಹೇಳುವುದಿಲ್ಲ ಎಂದು ಎರಡು ವಾಕ್ಯಗಳಲ್ಲಿ ಬರೆಯಿರಿ.'),
+
+  P(3, 1, 'beginner',
+    'Attack Your Own validate_reference',
+    'ನಿಮ್ಮ ಸ್ವಂತ validate_reference ಮೇಲೆ ದಾಳಿ ಮಾಡಿ',
+    'Using the lab, try each of these references and record the result and the reason: "references/python-release.md", "../secret.txt", "references/../../secret.txt", an absolute path, ".", "references", and a file larger than the size limit.\n1. Produce the table.\n2. For each rejection say which step of the gate caught it.\n3. Which of them would a string-prefix check have wrongly allowed?',
+    'lab ಬಳಸಿ ಈ ಪ್ರತಿ reference ಪ್ರಯತ್ನಿಸಿ ಫಲಿತಾಂಶ ಮತ್ತು ಕಾರಣ ದಾಖಲಿಸಿ: "references/python-release.md", "../secret.txt", "references/../../secret.txt", absolute path, ".", "references", ಮತ್ತು ಗಾತ್ರ ಮಿತಿಗಿಂತ ದೊಡ್ಡ ಫೈಲ್.\n1. ಕೋಷ್ಟಕ ಸಿದ್ಧಪಡಿಸಿ.\n2. ಪ್ರತಿ ತಿರಸ್ಕಾರವನ್ನು gate ನ ಯಾವ ಹಂತ ಹಿಡಿಯಿತು ಎಂದು ಹೇಳಿ.\n3. string-prefix ಪರಿಶೀಲನೆ ಇವುಗಳಲ್ಲಿ ಯಾವುದನ್ನು ತಪ್ಪಾಗಿ ಅನುಮತಿಸುತ್ತಿತ್ತು?'),
+  P(3, 2, 'intermediate',
+    'Symlink or Junction: Prove the Resolved Check',
+    'Symlink ಅಥವಾ Junction: Resolved ಪರಿಶೀಲನೆ ಸಾಬೀತುಪಡಿಸಿ',
+    'Create a link inside references/ that points outside the skill (a symlink where allowed, otherwise a Windows directory junction) and a normal file.\n1. Show that the lexical path starts inside the package and that the resolved path does not.\n2. Temporarily remove the relative_to check from a copy of validate_reference, show that the link now leaks the secret, then restore it.\n3. Explain why the ".." check alone could never have caught this, and why supporting links does not mean skipping containment.',
+    'references/ ಒಳಗೆ skill ಹೊರಗೆ ಸೂಚಿಸುವ ಲಿಂಕ್ (ಅನುಮತಿ ಇದ್ದರೆ symlink, ಇಲ್ಲದಿದ್ದರೆ Windows directory junction) ಮತ್ತು ಸಾಮಾನ್ಯ ಫೈಲ್ ರಚಿಸಿ.\n1. lexical path ಪ್ಯಾಕೇಜ್ ಒಳಗೆ ಆರಂಭವಾಗುತ್ತದೆ ಆದರೆ resolved path ಅಲ್ಲ ಎಂದು ತೋರಿಸಿ.\n2. validate_reference ನಕಲಿನಿಂದ relative_to ಪರಿಶೀಲನೆಯನ್ನು ತಾತ್ಕಾಲಿಕವಾಗಿ ತೆಗೆದು ಲಿಂಕ್ ರಹಸ್ಯ ಸೋರಿಸುತ್ತದೆ ಎಂದು ತೋರಿಸಿ, ನಂತರ ಮರುಸ್ಥಾಪಿಸಿ.\n3. ".." ಪರಿಶೀಲನೆ ಮಾತ್ರ ಇದನ್ನು ಎಂದಿಗೂ ಹಿಡಿಯಲಾರದು ಏಕೆ, ಮತ್ತು links ಬೆಂಬಲಿಸುವುದು containment ಬಿಡುವುದು ಎಂದಲ್ಲ ಏಕೆ?'),
+  P(3, 3, 'advanced',
+    'Write the Invariant Test Suite',
+    'Invariant ಪರೀಕ್ಷಾ ಸೂಟ್ ಬರೆಯಿರಿ',
+    'Write a unittest suite that proves the lesson\'s invariants against the lab.\n1. Cover discovery (nested fixtures not published), collision (declared precedence wins), determinism (ties are ambiguous), budget (catalog stays bounded), disclosure (selecting one skill does not load every body), branch (Python branch loads no container guide), containment, traversal and link escape.\n2. Run it and show the results; mark the link test as skipped with a clear reason if links cannot be created on your machine, never as passed.\n3. Say which of these tests would still be needed after switching to a real runtime, and which would become integration tests.',
+    'lab ವಿರುದ್ಧ ಪಾಠದ invariants ಸಾಬೀತುಪಡಿಸುವ unittest ಸೂಟ್ ಬರೆಯಿರಿ.\n1. discovery, collision, determinism, budget, disclosure, branch, containment, traversal ಮತ್ತು link escape ಒಳಗೊಳ್ಳಿ.\n2. ಚಲಾಯಿಸಿ ಫಲಿತಾಂಶ ತೋರಿಸಿ; ನಿಮ್ಮ ಯಂತ್ರದಲ್ಲಿ links ರಚಿಸಲಾಗದಿದ್ದರೆ link ಪರೀಕ್ಷೆಯನ್ನು ಸ್ಪಷ್ಟ ಕಾರಣದೊಂದಿಗೆ skipped ಎಂದು ಗುರುತಿಸಿ, ಎಂದಿಗೂ passed ಅಲ್ಲ.\n3. ನಿಜ runtime ಗೆ ಬದಲಿಸಿದ ನಂತರವೂ ಯಾವ ಪರೀಕ್ಷೆಗಳು ಬೇಕು, ಯಾವವು integration tests ಆಗುತ್ತವೆ ಎಂದು ತಿಳಿಸಿ.'),
+];

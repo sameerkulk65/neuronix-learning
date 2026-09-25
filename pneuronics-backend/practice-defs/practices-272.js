@@ -1,0 +1,56 @@
+const phaseId = '6a369d5e66020ed05b3214c3'; // Phase 16: Tools and Protocols
+const moduleId = '6a369d6066020ed05b321508'; // Module 272: Capstone: Tool Ecosystem
+const L = ['6ab6d0fb21bb0fad0b31e959', '6ab6d0fca385287c3d2c3710', '6ab6d0fdb7f309016aacd9f3'];
+const P = (part, order, difficulty, title, titleKn, problem, problemKn) => ({
+  phaseId, moduleId, lessonId: L[part - 1], order, difficulty, title, titleKn, problem, problemKn,
+});
+
+module.exports = [
+  P(1, 1, 'beginner',
+    'Read the Stateless Metadata',
+    'Stateless Metadata ಓದಿ',
+    'The lab builds request_meta() with a protocol version, client capabilities and client info.\n1. Run request_meta() and request_meta(with_tasks=False) and compare the two.\n2. Explain in your own words why each request carries this information rather than relying on an earlier session.\n3. What breaks if the server returns a task handle to a client that did not advertise the Tasks extension?',
+    'lab request_meta() ಅನ್ನು protocol version, client capabilities, client info ಜೊತೆ ನಿರ್ಮಿಸುತ್ತದೆ.\n1. request_meta() ಮತ್ತು request_meta(with_tasks=False) ಚಲಾಯಿಸಿ ಹೋಲಿಸಿ.\n2. ಹಿಂದಿನ ಸೆಷನ್ ಮೇಲೆ ಅವಲಂಬಿಸದೆ ಪ್ರತಿ request ಈ ಮಾಹಿತಿ ಏಕೆ ಹೊತ್ತೊಯ್ಯುತ್ತದೆ ಎಂದು ನಿಮ್ಮ ಮಾತಿನಲ್ಲಿ ವಿವರಿಸಿ.\n3. Tasks extension ಘೋಷಿಸದ client ಗೆ server task handle ಹಿಂತಿರುಗಿಸಿದರೆ ಏನು ಮುರಿಯುತ್ತದೆ?'),
+  P(1, 2, 'intermediate',
+    'Add a Third Actor and Tool',
+    'ಮೂರನೇ ನಟ ಮತ್ತು Tool ಸೇರಿಸಿ',
+    'Extend the lab with a tool "delete_report" that needs scope report:delete and a token for a third actor, carol, who has read and delete but not write.\n1. Add the tool, its pinned description hash and the token.\n2. Show one allowed and one denied call for carol and explain each with the "needs scope" reason.\n3. Why does the lab pin a hash of the description at review time, and what would you do when the description legitimately needs to change?',
+    'lab ಗೆ report:delete scope ಬೇಕಾದ "delete_report" tool ಮತ್ತು read, delete ಇದ್ದು write ಇಲ್ಲದ ಮೂರನೇ ನಟ carol ಗೆ token ಸೇರಿಸಿ.\n1. tool, ಅದರ pinned description hash, token ಸೇರಿಸಿ.\n2. carol ಗೆ ಒಂದು ಅನುಮತಿ ಮತ್ತು ಒಂದು ನಿರಾಕರಣೆ ತೋರಿಸಿ, "needs scope" ಕಾರಣದೊಂದಿಗೆ.\n3. ಪರಿಶೀಲನೆ ಸಮಯದಲ್ಲಿ description ನ hash ಅನ್ನು ಏಕೆ pin ಮಾಡುತ್ತೇವೆ, description ಸಮರ್ಪಕವಾಗಿ ಬದಲಾಗಬೇಕಾದರೆ ಏನು ಮಾಡುವಿರಿ?'),
+  P(1, 3, 'advanced',
+    'Discovery vs Authorization Test Matrix',
+    'Discovery vs Authorization ಪರೀಕ್ಷಾ ಮ್ಯಾಟ್ರಿಕ್ಸ್',
+    'Design a test matrix that proves discovery, authentication and authorization are separate steps.\n1. List at least six cases (for example listed but denied, unlisted but scoped, unknown token, tampered description).\n2. Implement them as unittest cases against the lab and show they pass.\n3. State which cases only prove local logic and which would need a real server or OAuth provider to count as integration evidence.',
+    'discovery, authentication, authorization ಪ್ರತ್ಯೇಕ ಹಂತಗಳು ಎಂದು ಸಾಬೀತುಪಡಿಸುವ ಪರೀಕ್ಷಾ ಮ್ಯಾಟ್ರಿಕ್ಸ್ ವಿನ್ಯಾಸಗೊಳಿಸಿ.\n1. ಕನಿಷ್ಠ ಆರು ಪ್ರಕರಣಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ (ಪಟ್ಟಿಯಲ್ಲಿದೆ ಆದರೆ ನಿರಾಕರಿಸಲಾಗಿದೆ, ಅಪರಿಚಿತ token, ಬದಲಿಸಿದ description ಇತ್ಯಾದಿ).\n2. lab ವಿರುದ್ಧ unittest ಆಗಿ ಅನುಷ್ಠಾನಿಸಿ, ಪಾಸ್ ಆಗುತ್ತವೆ ಎಂದು ತೋರಿಸಿ.\n3. ಯಾವ ಪ್ರಕರಣಗಳು ಸ್ಥಳೀಯ ತರ್ಕ ಮಾತ್ರ ಸಾಬೀತುಪಡಿಸುತ್ತವೆ ಮತ್ತು ಯಾವವಕ್ಕೆ ನಿಜ server ಅಥವಾ OAuth ಒದಗಿಸುವವರು ಬೇಕು ಎಂದು ತಿಳಿಸಿ.'),
+
+  P(2, 1, 'beginner',
+    'Trace the Task Handle',
+    'Task Handle ಅನ್ನು ಅನುಸರಿಸಿ',
+    'Run orchestrate("token-a", "TRACE-A").\n1. Print the generate_report result and the tasks/get result and label which has resultType "task" and which "complete".\n2. Where does the final report text live, and why is the handle not the report?\n3. Which two method names must NOT be added to a current Tasks implementation described in this lesson?',
+    'orchestrate("token-a", "TRACE-A") ಚಲಾಯಿಸಿ.\n1. generate_report ಫಲಿತಾಂಶ ಮತ್ತು tasks/get ಫಲಿತಾಂಶ ಮುದ್ರಿಸಿ; ಯಾವುದು resultType "task", ಯಾವುದು "complete" ಎಂದು ಗುರುತಿಸಿ.\n2. ಅಂತಿಮ ವರದಿ ಪಠ್ಯ ಎಲ್ಲಿದೆ, handle ವರದಿ ಅಲ್ಲ ಏಕೆ?\n3. ಈ ಪಾಠದ ಪ್ರಸ್ತುತ Tasks ಅನುಷ್ಠಾನಕ್ಕೆ ಯಾವ ಎರಡು method ಹೆಸರುಗಳನ್ನು ಸೇರಿಸಬಾರದು?'),
+  P(2, 2, 'intermediate',
+    'Add a Task State Machine',
+    'Task State Machine ಸೇರಿಸಿ',
+    'The lab task is created directly as completed. Improve it.\n1. Give tasks states created, working, input_required, completed and cancelled, with tasks_get and a new tasks_cancel that only allows legal transitions.\n2. Show one legal and one illegal transition and the error you return.\n3. Explain what a durable store would additionally need (TTL, restart recovery) and why an in-memory dictionary cannot provide it.',
+    'lab ನ task ನೇರವಾಗಿ completed ಆಗಿ ರಚನೆಯಾಗುತ್ತದೆ. ಸುಧಾರಿಸಿ.\n1. created, working, input_required, completed, cancelled ಸ್ಥಿತಿಗಳನ್ನು ನೀಡಿ; tasks_get ಮತ್ತು ಕಾನೂನುಬದ್ಧ ಪರಿವರ್ತನೆಗಳನ್ನು ಮಾತ್ರ ಅನುಮತಿಸುವ ಹೊಸ tasks_cancel ಬರೆಯಿರಿ.\n2. ಒಂದು ಕಾನೂನುಬದ್ಧ ಮತ್ತು ಒಂದು ಕಾನೂನುಬಾಹಿರ ಪರಿವರ್ತನೆ ಮತ್ತು ನೀವು ಹಿಂತಿರುಗಿಸುವ ದೋಷ ತೋರಿಸಿ.\n3. durable store ಗೆ ಹೆಚ್ಚುವರಿಯಾಗಿ ಏನು ಬೇಕು (TTL, restart recovery) ಮತ್ತು in-memory dictionary ಅದನ್ನು ಏಕೆ ನೀಡಲಾರದು ಎಂದು ವಿವರಿಸಿ.'),
+  P(2, 3, 'advanced',
+    'Write a Real Trace Validator',
+    'ನಿಜ Trace Validator ಬರೆಯಿರಿ',
+    'The lab tree_ok() checks one root and existing parents. Strengthen it.\n1. Also reject cycles, duplicate span ids and spans whose trace id differs from the root.\n2. Feed it a valid trace and one trace for each defect and show the results.\n3. Explain why even a perfect in-memory validator still does not prove that a collector received and linked the spans.',
+    'lab ನ tree_ok() ಒಂದು root ಮತ್ತು ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ parents ಪರಿಶೀಲಿಸುತ್ತದೆ. ಬಲಪಡಿಸಿ.\n1. cycles, ನಕಲು span ids ಮತ್ತು root ಗಿಂತ ಬೇರೆ trace id ಇರುವ spans ಅನ್ನೂ ತಿರಸ್ಕರಿಸಿ.\n2. ಮಾನ್ಯ trace ಮತ್ತು ಪ್ರತಿ ದೋಷಕ್ಕೆ ಒಂದೊಂದು trace ನೀಡಿ ಫಲಿತಾಂಶ ತೋರಿಸಿ.\n3. ಪರಿಪೂರ್ಣ in-memory validator ಸಹ collector ಸ್ವೀಕರಿಸಿ spans ಜೋಡಿಸಿದೆ ಎಂದು ಸಾಬೀತುಪಡಿಸುವುದಿಲ್ಲ ಏಕೆ?'),
+
+  P(3, 1, 'beginner',
+    'Classify the Evidence',
+    'ಸಾಕ್ಷ್ಯ ವರ್ಗೀಕರಿಸಿ',
+    'For each observation, give its level on the six-step evidence ladder and say what it does and does not prove:\n(a) server_discover() returned the expected dict  (b) a unit test asserted a span exists  (c) a captured HTTP request/response transcript  (d) a collector log showing the span arrived with the right parent  (e) a printed line "export ok".',
+    'ಪ್ರತಿ ವೀಕ್ಷಣೆಗೆ ಆರು-ಹಂತದ ಸಾಕ್ಷ್ಯ ಏಣಿಯಲ್ಲಿ ಅದರ ಹಂತ ತಿಳಿಸಿ ಮತ್ತು ಅದು ಏನನ್ನು ಸಾಬೀತುಪಡಿಸುತ್ತದೆ/ಸಾಬೀತುಪಡಿಸುವುದಿಲ್ಲ ಎಂದು ಹೇಳಿ:\n(a) server_discover() ನಿರೀಕ್ಷಿತ dict ಹಿಂತಿರುಗಿಸಿತು  (b) span ಇದೆ ಎಂದು unit test ದೃಢೀಕರಿಸಿತು  (c) ಸೆರೆಹಿಡಿದ HTTP request/response  (d) ಸರಿಯಾದ parent ಜೊತೆ span ಬಂದಿದೆ ಎಂದು collector log  (e) "export ok" ಮುದ್ರಿತ ಸಾಲು.'),
+  P(3, 2, 'intermediate',
+    'Plan the Promotion of One Boundary',
+    'ಒಂದು ಗಡಿಯ Promotion ಯೋಜಿಸಿ',
+    'Pick one row of the simulation-to-production table (for example Authentication or Delegation).\n1. Write the replacement, the integration test that proves the boundary was crossed and the local tests you would keep.\n2. List two failure cases beyond the happy path that the integration test must include.\n3. Explain why replacing this boundary together with two others would make failures hard to attribute.',
+    'simulation-to-production ಕೋಷ್ಟಕದ ಒಂದು ಸಾಲನ್ನು ಆರಿಸಿ (ಉದಾ. Authentication ಅಥವಾ Delegation).\n1. ಬದಲಿ, ಗಡಿ ದಾಟಿದೆ ಎಂದು ಸಾಬೀತುಪಡಿಸುವ integration test ಮತ್ತು ಉಳಿಸಿಕೊಳ್ಳುವ ಸ್ಥಳೀಯ ಪರೀಕ್ಷೆಗಳನ್ನು ಬರೆಯಿರಿ.\n2. ಸಾಮಾನ್ಯ ಹಾದಿಯ ಹೊರತು integration test ಒಳಗೊಳ್ಳಬೇಕಾದ ಎರಡು ವೈಫಲ್ಯ ಪ್ರಕರಣಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ.\n3. ಇದನ್ನು ಇನ್ನೆರಡರೊಂದಿಗೆ ಒಟ್ಟಿಗೆ ಬದಲಿಸಿದರೆ ವೈಫಲ್ಯ ಆರೋಪಿಸುವುದು ಕಷ್ಟ ಏಕೆ ಎಂದು ವಿವರಿಸಿ.'),
+  P(3, 3, 'advanced',
+    'Build an Honest Claims Report',
+    'ಪ್ರಾಮಾಣಿಕ Claims ವರದಿ ನಿರ್ಮಿಸಿ',
+    'The lab ends with a claims table. Turn it into a small generator.\n1. Write a function that takes a list of evidence records (name, level 1-6, source) and returns, for each boundary, the strongest claim it supports and the level still missing for a production claim.\n2. Run it on the lab\'s own evidence and show that it refuses to call anything production-ready.\n3. Add one hypothetical level-6 record for discovery and show how the report changes for that boundary only.',
+    'lab ಕೊನೆಯಲ್ಲಿ claims ಕೋಷ್ಟಕ ಮುದ್ರಿಸುತ್ತದೆ. ಅದನ್ನು ಸಣ್ಣ generator ಆಗಿ ಪರಿವರ್ತಿಸಿ.\n1. ಸಾಕ್ಷ್ಯ ದಾಖಲೆಗಳ (ಹೆಸರು, ಹಂತ 1-6, ಮೂಲ) ಪಟ್ಟಿ ಪಡೆದು ಪ್ರತಿ ಗಡಿಗೆ ಅದು ಬೆಂಬಲಿಸುವ ಬಲಿಷ್ಠ ಹೇಳಿಕೆ ಮತ್ತು production ಹೇಳಿಕೆಗೆ ಇನ್ನೂ ಕೊರತೆ ಇರುವ ಹಂತ ಹಿಂತಿರುಗಿಸುವ function ಬರೆಯಿರಿ.\n2. lab ನ ಸ್ವಂತ ಸಾಕ್ಷ್ಯದ ಮೇಲೆ ಚಲಾಯಿಸಿ; ಯಾವುದನ್ನೂ production-ಸಿದ್ಧ ಎಂದು ಕರೆಯುವುದಿಲ್ಲ ಎಂದು ತೋರಿಸಿ.\n3. discovery ಗೆ ಒಂದು ಕಾಲ್ಪನಿಕ ಹಂತ-6 ದಾಖಲೆ ಸೇರಿಸಿ, ಆ ಗಡಿಗೆ ಮಾತ್ರ ವರದಿ ಹೇಗೆ ಬದಲಾಗುತ್ತದೆ ತೋರಿಸಿ.'),
+];
